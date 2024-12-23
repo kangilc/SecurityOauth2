@@ -2,7 +2,6 @@ package net.javaf.SecurityOauth2.config.auth;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Role;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,6 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 @EnableWebSecurity(debug = false)
 @Slf4j
 public class SecurityConfig {
+	
+	private final CustomOAuth2UserService customOAuth2UserService;
+	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) {
 		try {
@@ -48,8 +50,12 @@ public class SecurityConfig {
 				)
 				.oauth2Login(login -> login
 					.userInfoEndpoint(user -> user
-						.userService(null) // customOAuth2UserService)
+						.userService(customOAuth2UserService) // customOAuth2UserService)
 					)
+				)
+				.sessionManagement( session -> session
+					.maximumSessions(1)
+					.maxSessionsPreventsLogin(false)
 				)
 			;
 			return http.build();

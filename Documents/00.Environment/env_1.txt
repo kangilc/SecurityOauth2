@@ -1,0 +1,39 @@
+erd-cloud 전체화면
+$('.erd-container.erdWrap').width('100%'); $('.erd-ads-area').hide();
+
+AWS
+prd
+OpenApi1@#
+
+[ACS 터미널 로그인]
+kangil.choi@lgepartner.com
+
+[HUB LOGIN]
+lgecki01
+123qwe4r$
+
+[VAULT ID 선택]
+vault login -method=ldap -namespace=LGBC_QADEV username=kangil.choi
+vault login -method=ldap -namespace=LGBC_PRD username=kangil.choi
+
+123qwe4r$
+
+[DEV]
+vault ssh -namespace=LGBC_QADEV -role ssh-an2-bcdeveloper-dev-web-webadm -mode otp -strict-host-key-checking=no webadm@10.154.232.170
+vault ssh -namespace=LGBC_QADEV -role ssh-an2-bcdeveloper-dev-was-wasadm -mode otp -strict-host-key-checking=no wasadm@10.154.232.196
+ 
+[QA]
+vault ssh -namespace=LGBC_QADEV -role ssh-an2-bcdeveloper-qa-web-webadm -mode otp -strict-host-key-checking=no webadm@10.150.84.164
+vault ssh -namespace=LGBC_QADEV -role ssh-an2-bcdeveloper-qa-web-webadm -mode otp -strict-host-key-checking=no webadm@10.150.85.6
+vault ssh -namespace=LGBC_QADEV -role ssh-an2-bcdeveloper-qa-was-wasadm -mode otp -strict-host-key-checking=no wasadm@10.150.84.175
+vault ssh -namespace=LGBC_QADEV -role ssh-an2-bcdeveloper-qa-was-wasadm -mode otp -strict-host-key-checking=no wasadm@10.150.85.10
+
+[PRD]
+WEB[01a, 02c]
+vault ssh -namespace=LGBC_PRD -role ssh-an2-bcdeveloper-prd-web-webadm -mode otp -strict-host-key-checking=no webadm@10.154.234.219
+vault ssh -namespace=LGBC_PRD -role ssh-an2-bcdeveloper-prd-web-webadm -mode otp -strict-host-key-checking=no webadm@10.154.235.72
+[WAS]
+vault ssh -namespace=LGBC_PRD -role ssh-an2-bcdeveloper-prd-was-wasadm -mode otp -strict-host-key-checking=no wasadm@10.154.234.200
+vault ssh -namespace=LGBC_PRD -role ssh-an2-bcdeveloper-prd-was-wasadm -mode otp -strict-host-key-checking=no wasadm@10.154.235.40
+vault ssh -namespace=LGBC_PRD -role ssh-an2-bcdeveloper-prd-was-wasadm -mode otp -strict-host-key-checking=no wasadm@10.154.234.226
+vault ssh -namespace=LGBC_PRD -role ssh-an2-bcdeveloper-prd-was-wasadm -mode otp -strict-host-key-checking=no wasadm@10.154.235.53
