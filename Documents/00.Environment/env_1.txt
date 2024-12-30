@@ -10,7 +10,7 @@ kangil.choi@lgepartner.com
 
 [HUB LOGIN]
 lgecki01
-123qwe4r$
+OpenApi123@#
 
 [VAULT ID 선택]
 vault login -method=ldap -namespace=LGBC_QADEV username=kangil.choi
@@ -23,8 +23,10 @@ vault ssh -namespace=LGBC_QADEV -role ssh-an2-bcdeveloper-dev-web-webadm -mode o
 vault ssh -namespace=LGBC_QADEV -role ssh-an2-bcdeveloper-dev-was-wasadm -mode otp -strict-host-key-checking=no wasadm@10.154.232.196
  
 [QA]
+[web]
 vault ssh -namespace=LGBC_QADEV -role ssh-an2-bcdeveloper-qa-web-webadm -mode otp -strict-host-key-checking=no webadm@10.150.84.164
 vault ssh -namespace=LGBC_QADEV -role ssh-an2-bcdeveloper-qa-web-webadm -mode otp -strict-host-key-checking=no webadm@10.150.85.6
+[was]
 vault ssh -namespace=LGBC_QADEV -role ssh-an2-bcdeveloper-qa-was-wasadm -mode otp -strict-host-key-checking=no wasadm@10.150.84.175
 vault ssh -namespace=LGBC_QADEV -role ssh-an2-bcdeveloper-qa-was-wasadm -mode otp -strict-host-key-checking=no wasadm@10.150.85.10
 
@@ -37,3 +39,4 @@ vault ssh -namespace=LGBC_PRD -role ssh-an2-bcdeveloper-prd-was-wasadm -mode otp
 vault ssh -namespace=LGBC_PRD -role ssh-an2-bcdeveloper-prd-was-wasadm -mode otp -strict-host-key-checking=no wasadm@10.154.235.40
 vault ssh -namespace=LGBC_PRD -role ssh-an2-bcdeveloper-prd-was-wasadm -mode otp -strict-host-key-checking=no wasadm@10.154.234.226
 vault ssh -namespace=LGBC_PRD -role ssh-an2-bcdeveloper-prd-was-wasadm -mode otp -strict-host-key-checking=no wasadm@10.154.235.53
+

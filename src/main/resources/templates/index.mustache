@@ -1,4 +1,5 @@
 {{>layout/header}}
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
    <h1>Oauth2와 Security | Mustache | Spring Boot | Test</h1>
    <div class="col-md-12">
        <!--로그인 기능 영역-->
@@ -11,7 +12,9 @@
                    <a href="/logout" class="btn btn-info active" role="button">Logout</a>
                {{/userName}}
                {{^userName}}
-                   <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
+                   <a href="/oauth2/authorization/google" class="btn btn-primary active" role="button">Google Login</a>
+                   <a href="/oauth2/authorization/naver" class="btn btn-secondary active" role="button">Naver Login</a>
+                   <a href="/oauth2/authorization/lmp" class="btn btn-secondary active" role="button">LMP Login</a>
                {{/userName}}
                </p>
            </div>
