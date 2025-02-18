@@ -126,3 +126,115 @@ chmod 700 get_helm.sh
 더 궁금한 점이 있으면 언제든지 질문해 주세요! 😊
 
 [1](https://helm.sh/ko/docs/intro/install/): https://helm.sh/ko/docs/intro/install/
+
+### Helm 설치 후 해야 할 설정
+
+Helm을 설치한 후에는 몇 가지 기본 설정을 해야 합니다:
+
+1. **Helm 저장소 추가**:
+   - Helm Chart를 다운로드하고 설치할 수 있는 저장소를 추가합니다. 예를 들어, 공식 stable 저장소를 추가하려면 다음 명령어를 사용합니다:
+     ```bash
+     helm repo add stable https://charts.helm.sh/stable
+     ```
+
+2. **Helm 저장소 업데이트**:
+   - 저장소를 추가한 후에는 저장소 정보를 업데이트합니다:
+     ```bash
+     helm repo update
+     ```
+
+3. **kubectl 설정 확인**:
+   - Helm은 `kubectl`을 사용하여 쿠버네티스 클러스터와 통신합니다. `kubectl`이 올바르게 설정되어 있는지 확인합니다:
+     ```bash
+     kubectl config view
+     ```
+
+### Helm의 기본 명령어
+
+Helm을 사용하여 쿠버네티스 애플리케이션을 관리할 때 자주 사용하는 기본 명령어는 다음과 같습니다:
+
+1. **helm search**:
+   - 저장소에서 차트를 검색합니다.
+     ```bash
+     helm search repo <chart-name>
+     ```
+
+2. **helm install**:
+   - 차트를 설치합니다.
+     ```bash
+     helm install <release-name> <chart-name>
+     ```
+
+3. **helm list**:
+   - 설치된 릴리스를 나열합니다.
+     ```bash
+     helm list
+     ```
+
+4. **helm upgrade**:
+   - 릴리스를 업그레이드합니다.
+     ```bash
+     helm upgrade <release-name> <chart-name>
+     ```
+
+5. **helm uninstall**:
+   - 릴리스를 삭제합니다.
+     ```bash
+     helm uninstall <release-name>
+     ```
+
+6. **helm repo add**:
+   - 새로운 저장소를 추가합니다.
+     ```bash
+     helm repo add <repo-name> <repo-url>
+     ```
+
+7. **helm repo update**:
+   - 저장소 정보를 업데이트합니다.
+     ```bash
+     helm repo update
+     ```
+
+## Helm Chart를 배포하는 방법
+
+Helm Chart를 배포하는 방법은 다음과 같습니다:
+
+1. **Helm Chart 생성**:
+   - 새로운 Helm Chart를 생성합니다.
+     ```bash
+     helm create <chart-name>
+     ```
+
+2. **Chart 파일 수정**:
+   - 생성된 Chart 디렉토리에서 `values.yaml` 파일과 `templates` 디렉토리의 파일을 수정하여 원하는 설정을 반영합니다.
+
+3. **Chart 배포 전 테스트**:
+   - Chart의 문법과 템플릿을 테스트합니다.
+     ```bash
+     helm lint <chart-directory>
+     helm template <chart-directory>
+     ```
+
+4. **Chart 배포**:
+   - Chart를 쿠버네티스 클러스터에 배포합니다.
+     ```bash
+     helm install <release-name> <chart-directory>
+     ```
+
+5. **배포 확인**:
+   - 배포된 릴리스를 확인합니다.
+     ```bash
+     helm list
+     ```
+
+6. **Chart 업그레이드**:
+   - Chart를 수정한 후 업그레이드합니다.
+     ```bash
+     helm upgrade <release-name> <chart-directory>
+     ```
+
+이렇게 하면 Helm을 사용하여 쿠버네티스 애플리케이션을 쉽게 배포하고 관리할 수 있습니다. 더 궁금한 점이 있으면 언제든지 질문해 주세요! 😊
+
+[1](https://velog.io/@chappi/helm%EC%9D%84-%EB%B0%B0%EC%9B%8C%EB%B3%B4%EC%9E%90-3%EC%9D%BC%EC%B0%A8-%EC%84%A4%EC%B9%98%EC%99%80-%EC%8B%9C%EC%9E%91): https://helm.sh/ko/docs/intro/install/
+[2](https://bing.com/search?q=Helm+%ec%84%a4%ec%b9%98+%ed%9b%84+%ea%b8%b0%eb%b3%b8+%ec%84%a4%ec%a0%95): https://helm.sh/ko/docs/intro/using_helm/
+[3](https://helm.sh/ko/docs/intro/using_helm/): https://velog.io/@salgu1998/Kubernetes-Helm-%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-%ED%97%AC%EB%A6%84-Chart-%EC%83%9D%EC%84%B1%ED%95%98%EA%B3%A0-%EB%B0%B0%ED%8F%AC%ED%95%98%EA%B8%B0
