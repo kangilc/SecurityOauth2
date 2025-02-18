@@ -419,3 +419,113 @@ Helm을 사용하여 모니터링 도구를 설치하고 설정하는 방법은 
 [4](https://helm.sh/ko/docs/intro/quickstart/): https://velog.io/@yerimm99/k8s-Helm%EC%9C%BC%EB%A1%9C-Kubernetes-%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0-%EC%84%A4%EC%B9%98%EB%B6%80%ED%84%B0-%EC%B0%A8%ED%8A%B8-%EB%B0%B0%ED%8F%AC%EA%B9%8C%EC%A7%80
 [1](https://helm.sh/ko/docs/chart_template_guide/function_list/): https://helm.sh/ko/docs/chart_template_guide/function_list/
 [2](https://velog.io/@showui96/Helm-차트-템플릿-가이드-1-명령어와-내장-객체): https://velog.io/@showui96/Helm-차트-템플릿-가이드-1-명령어와-내장-객체
+
+### Helm으로 알림 설정하는 법
+
+Helm을 사용하여 알림을 설정하려면 Prometheus와 Alertmanager를 함께 사용하면 됩니다. Prometheus는 메트릭을 수집하고, Alertmanager는 알림을 관리합니다. 다음은 Helm을 사용하여 Prometheus와 Alertmanager를 설정하는 방법입니다:
+
+1. **Helm 저장소 추가**:
+   ```bash
+   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+   helm repo update
+   ```
+
+2. **Prometheus 및 Alertmanager 설치**:
+   ```bash
+   helm install prometheus prometheus-community/prometheus
+   ```
+
+3. **Alertmanager 설정**:
+   - `values.yaml` 파일을 수정하여 Alertmanager 설정을 추가합니다. 예를 들어, 이메일 알림을 설정하려면 다음과 같이 설정합니다:
+     ```yaml
+     alertmanager:
+       config:
+         global:
+           smtp_smarthost: 'smtp.example.com:587'
+           smtp_from: 'alertmanager@example.com'
+           smtp_auth_username: 'your_username'
+           smtp_auth_password: 'your_password'
+         route:
+           receiver: 'email'
+         receivers:
+           - name: 'email'
+             email_configs:
+               - to: 'your_email@example.com'
+     ```
+
+4. **Prometheus 규칙 추가**:
+   - `values.yaml` 파일에 Prometheus 알림 규칙을 추가합니다:
+     ```yaml
+     serverFiles:
+       alerts:
+         groups:
+           - name: example
+             rules:
+               - alert: HighMemoryUsage
+                 expr: node_memory_Active_bytes / node_memory_MemTotal_bytes * 100 > 80
+                 for: 5m
+                 labels:
+                   severity: 'critical'
+                 annotations:
+                   summary: 'High memory usage detected'
+                   description: 'Memory usage is above 80% for more than 5 minutes.'
+     ```
+
+5. **Helm 차트 업데이트**:
+   ```bash
+   helm upgrade prometheus prometheus-community/prometheus -f values.yaml
+   ```
+
+이렇게 하면 Prometheus와 Alertmanager를 사용하여 알림을 설정할 수 있습니다[1](https://helm.sh/ko/docs/intro/quickstart/).
+
+### Prometheus의 주요 기능
+
+Prometheus는 오픈 소스 시스템 모니터링 및 알림 도구로, 다음과 같은 주요 기능을 제공합니다:
+
+1. **다차원 데이터 모델**:
+   - 메트릭 이름과 키/값 쌍으로 식별되는 시계열 데이터를 사용합니다.
+
+2. **PromQL**:
+   - 유연한 쿼리 언어로, 시계열 데이터를 쿼리하고 집계할 수 있습니다.
+
+3. **독립적인 서버 노드**:
+   - 분산 저장소에 의존하지 않으며, 단일 서버 노드가 자율적으로 동작합니다.
+
+4. **Pull 모델**:
+   - HTTP를 통해 타겟에서 메트릭을 수집합니다.
+
+5. **서비스 디스커버리**:
+   - 서비스 디스커버리 또는 정적 구성을 통해 타겟을 자동으로 발견합니다.
+
+6. **다양한 그래프 및 대시보드 지원**:
+   - Grafana와 같은 도구를 통해 데이터를 시각화할 수 있습니다[2](https://apronsksk.tistory.com/5)[3](https://helm.sh/ko/docs/intro/using_helm/).
+
+### Grafana 대시보드 템플릿 사용법
+
+Grafana 대시보드 템플릿을 사용하면 미리 정의된 대시보드를 쉽게 가져와 사용할 수 있습니다. 다음은 Grafana 대시보드 템플릿을 사용하는 방법입니다:
+
+1. **Grafana 설치**:
+   ```bash
+   docker run -d -p 3000:3000 --name=grafana grafana/grafana
+   ```
+
+2. **Prometheus 데이터 소스 추가**:
+   - Grafana 웹 인터페이스에 접속하여 Prometheus를 데이터 소스로 추가합니다:
+     - **URL**: `http://prometheus-server:80`
+     - **Access**: `Server`
+
+3. **대시보드 템플릿 가져오기**:
+   - Grafana 웹 인터페이스에서 `Dashboards` > `Manage` > `Import`를 선택합니다.
+   - 템플릿 ID 또는 URL을 입력하고 `Load` 버튼을 클릭합니다.
+   - 데이터 소스를 선택하고 `Import` 버튼을 클릭하여 대시보드를 가져옵니다.
+
+4. **대시보드 커스터마이징**:
+   - 가져온 대시보드를 필요에 맞게 수정하고, 새로운 패널을 추가하거나 기존 패널을 수정할 수 있습니다[4](https://docs.kakaocloud.com/tutorial/observability/grafana-monitoring)[5](https://bing.com/search?q=Grafana+%eb%8c%80%ec%8b%9c%eb%b3%b4%eb%93%9c+%ed%85%9c%ed%94%8c%eb%a6%bf+%ec%82%ac%ec%9a%a9%eb%b2%95).
+
+이렇게 하면 Grafana 대시보드 템플릿을 사용하여 모니터링 대시보드를 쉽게 구성할 수 있습니다. 더 궁금한 점이 있으면 언제든지 질문해 주세요! 😊
+
+[1](https://helm.sh/ko/docs/intro/quickstart/): https://helm.sh/ko/docs/intro/quickstart/
+[2](https://apronsksk.tistory.com/5): https://prometheus.io/docs/introduction/overview/
+[3](https://helm.sh/ko/docs/intro/using_helm/): https://velog.io/@mag000225/Prometheus-Prometheus%EB%9E%80
+[4](https://docs.kakaocloud.com/tutorial/observability/grafana-monitoring): https://docs.kakaocloud.com/tutorial/observability/grafana-monitoring
+[5](https://bing.com/search?q=Grafana+%eb%8c%80%ec%8b%9c%eb%b3%b4%eb%93%9c+%ed%85%9c%ed%94%8c%eb%a6%bf+%ec%82%ac%ec%9a%a9%eb%b2%95): https://grafana.com/grafana/dashboards/
