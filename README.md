@@ -490,7 +490,7 @@ Grafana에서 kube-proxy 메트릭을 시각화하는 예시 대시보드는 다
 
 [1](https://www.inflearn.com/community/questions/1009425/kube-proxy-metric%EC%84%A4%EC%A0%95%EC%97%90-%EA%B4%80%ED%95%9C-%EC%A7%88%EB%AC%B8%EC%9E%85%EB%8B%88%EB%8B%A4): https://kubernetes.io/ko/docs/reference/command-line-tools-reference/kube-proxy/
 
-###kube-proxy의 성능을 최적화하는 몇 가지 방법###
+### kube-proxy의 성능을 최적화하는 몇 가지 방법
 주요 방법 중 하나는 **IPVS 모드**를 사용하는 것입니다. IPVS는 iptables에 비해 더 나은 성능과 확장성을 제공하며, 대규모 클러스터에서의 네트워크 요청을 효율적으로 처리할 수 있습니다[1](https://velog.io/@koyum0213/Kubernetes%EC%9D%98-Service-Kube-proxy).
 
 ### 주요 최적화 방법
