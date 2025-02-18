@@ -190,6 +190,35 @@ kubelet --config /etc/kubernetes/kubelet-config.yaml
 ```
 여기서 `--config`는 kubelet 설정 파일의 경로를 지정합니다.
 
+이 파일은 JSON 또는 YAML 형식으로 작성되며, 다양한 파라미터를 설정할 수 있습니다. 아래는 kubelet 설정 파일의 예시입니다:
+
+```yaml
+apiVersion: kubelet.config.k8s.io/v1beta1
+kind: KubeletConfiguration
+address: "192.168.0.8"
+port: 20250
+serializeImagePulls: false
+evictionHard:
+  memory.available: "200Mi"
+```
+
+### 주요 파라미터 설명
+- **apiVersion**: 설정 파일의 API 버전을 지정합니다. 여기서는 `kubelet.config.k8s.io/v1beta1`을 사용합니다.
+- **kind**: 설정 파일의 종류를 지정합니다. 여기서는 `KubeletConfiguration`입니다.
+- **address**: kubelet이 바인딩할 IP 주소를 지정합니다. 예시에서는 `192.168.0.8`입니다.
+- **port**: kubelet이 수신할 포트를 지정합니다. 예시에서는 `20250`입니다.
+- **serializeImagePulls**: 이미지를 병렬로 가져올지 여부를 지정합니다. `false`로 설정하면 병렬로 이미지를 가져옵니다.
+- **evictionHard**: 리소스 부족 시 포드를 축출하는 조건을 지정합니다. 예시에서는 사용 가능한 메모리가 `200Mi` 이하로 떨어지면 포드를 축출합니다[1](https://kubernetes.io/ko/docs/tasks/administer-cluster/kubelet-config-file/).
+
+이 설정 파일을 사용하여 kubelet을 시작하려면 `--config` 플래그를 사용하여 설정 파일의 경로를 지정합니다:
+```bash
+kubelet --config /path/to/kubelet-config.yaml
+```
+
+이렇게 하면 kubelet이 설정 파일에서 구성을 불러옵니다. 커맨드 라인 플래그와 설정 파일의 값이 충돌할 경우, 커맨드 라인 플래그가 우선합니다[1](https://kubernetes.io/ko/docs/tasks/administer-cluster/kubelet-config-file/).
+
+[1](https://kubernetes.io/ko/docs/tasks/administer-cluster/kubelet-config-file/): https://kubernetes.io/ko/docs/tasks/administer-cluster/kubelet-config-file/
+
 ### kube-proxy
 kube-proxy는 각 노드에서 실행되며, 네트워크 프록시와 로드 밸런서를 제공합니다. kube-proxy는 클러스터 내의 네트워크 규칙을 관리하여 포드 간의 통신을 가능하게 합니다. 예를 들어, kube-proxy를 실행하는 명령은 다음과 같습니다:
 ```bash
