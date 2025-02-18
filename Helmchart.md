@@ -238,3 +238,83 @@ Helm Chart를 배포하는 방법은 다음과 같습니다:
 [1](https://velog.io/@chappi/helm%EC%9D%84-%EB%B0%B0%EC%9B%8C%EB%B3%B4%EC%9E%90-3%EC%9D%BC%EC%B0%A8-%EC%84%A4%EC%B9%98%EC%99%80-%EC%8B%9C%EC%9E%91): https://helm.sh/ko/docs/intro/install/
 [2](https://bing.com/search?q=Helm+%ec%84%a4%ec%b9%98+%ed%9b%84+%ea%b8%b0%eb%b3%b8+%ec%84%a4%ec%a0%95): https://helm.sh/ko/docs/intro/using_helm/
 [3](https://helm.sh/ko/docs/intro/using_helm/): https://velog.io/@salgu1998/Kubernetes-Helm-%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-%ED%97%AC%EB%A6%84-Chart-%EC%83%9D%EC%84%B1%ED%95%98%EA%B3%A0-%EB%B0%B0%ED%8F%AC%ED%95%98%EA%B8%B0
+
+### Helm Chart의 템플릿 구조
+
+Helm Chart는 쿠버네티스 애플리케이션을 정의하고 배포하는 데 필요한 모든 리소스를 포함하는 패키지입니다. Helm Chart의 기본 구조는 다음과 같습니다:
+
+```
+mychart/
+  Chart.yaml          # Chart에 대한 메타데이터
+  values.yaml         # 기본 값 파일
+  charts/             # 의존성 Chart
+  templates/          # 쿠버네티스 리소스 템플릿
+  templates/_helpers.tpl  # 템플릿 헬퍼 파일
+```
+
+- **Chart.yaml**: Chart의 메타데이터를 포함하는 파일입니다. 예를 들어, Chart의 이름, 버전, 설명 등이 포함됩니다.
+- **values.yaml**: Chart의 기본 설정 값을 정의하는 파일입니다. 사용자는 이 파일을 수정하여 설정 값을 변경할 수 있습니다.
+- **charts/**: Chart의 의존성을 포함하는 디렉터리입니다. 다른 Chart를 의존성으로 포함할 수 있습니다.
+- **templates/**: 쿠버네티스 리소스 템플릿 파일을 포함하는 디렉터리입니다. 이 디렉터리 내의 파일들은 values.yaml 파일과 결합되어 유효한 쿠버네티스 매니페스트 파일을 생성합니다[1](https://helm.sh/ko/docs/topics/charts/)[2](https://helm.sh/ko/docs/chart_best_practices/templates/).
+
+### Helm을 사용한 롤백 방법
+
+Helm을 사용하여 이전 버전으로 롤백하는 방법은 다음과 같습니다:
+
+1. **릴리스 이력 확인**:
+   ```bash
+   helm history <release-name>
+   ```
+   이 명령어를 사용하여 특정 릴리스의 업그레이드 또는 설치 이력을 확인할 수 있습니다.
+
+2. **롤백 실행**:
+   ```bash
+   helm rollback <release-name> <revision>
+   ```
+   예를 들어, `revision 1`로 롤백하려면 다음과 같이 실행합니다:
+   ```bash
+   helm rollback my-release 1
+   ```
+   이 명령어를 실행하면, Helm은 클러스터 내 모든 관련 구성 요소를 지정된 리비전 상태로 되돌립니다[3](https://velog.io/@captain-yun/Helm%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%9C-%EB%A1%A4%EB%B0%B1-%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C%EC%84%9C%EB%B9%84%EC%8A%A4%EB%A5%BC-%EC%9D%B4%EC%A0%84-%EC%83%81%ED%83%9C%EB%A1%9C-%EB%90%98%EB%8F%8C%EB%A6%AC%EA%B8%B0)[4](https://helm.sh/ko/docs/helm/helm_rollback/).
+
+### Helm으로 비밀 관리하는 법
+
+Helm을 사용하여 비밀(Secrets)을 관리하는 방법은 다음과 같습니다:
+
+1. **values.yaml 파일에 비밀 추가**:
+   values.yaml 파일에 비밀 값을 추가합니다. 예를 들어:
+   ```yaml
+   secret:
+     username: admin
+     password: secretpassword
+   ```
+
+2. **템플릿 파일에서 비밀 사용**:
+   templates 디렉터리 내의 템플릿 파일에서 비밀 값을 참조합니다. 예를 들어, 시크릿 리소스를 생성하는 템플릿 파일:
+   ```yaml
+   apiVersion: v1
+   kind: Secret
+   metadata:
+     name: my-secret
+   type: Opaque
+   data:
+     username: {{ .Values.secret.username | b64enc }}
+     password: {{ .Values.secret.password | b64enc }}
+   ```
+
+3. **Helm 차트 설치**:
+   차트를 설치할 때, values.yaml 파일을 사용하여 비밀 값을 설정합니다:
+   ```bash
+   helm install my-release ./mychart -f values.yaml
+   ```
+
+이렇게 하면 Helm을 사용하여 비밀을 안전하게 관리할 수 있습니다[5](https://helm.sh/ko/docs/intro/quickstart/)[6](https://helm.sh/ko/docs/intro/using_helm/).
+
+더 궁금한 점이 있으면 언제든지 질문해 주세요! 😊
+
+[3](https://velog.io/@captain-yun/Helm%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%9C-%EB%A1%A4%EB%B0%B1-%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C%EC%84%9C%EB%B9%84%EC%8A%A4%EB%A5%BC-%EC%9D%B4%EC%A0%84-%EC%83%81%ED%83%9C%EB%A1%9C-%EB%90%98%EB%8F%8C%EB%A6%AC%EA%B8%B0): https://velog.io/@captain-yun/Helm%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%9C-%EB%A1%A4%EB%B0%B1-%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C%EC%84%9C%EB%B9%84%EC%8A%A4%EB%A5%BC-%EC%9D%B4%EC%A0%84-%EC%83%81%ED%83%9C%EB%A1%9C-%EB%90%98%EB%8F%8C%EB%A6%AC%EA%B8%B0
+[4](https://helm.sh/ko/docs/helm/helm_rollback/): https://helm.sh/ko/docs/helm/helm_rollback/
+[5](https://helm.sh/ko/docs/intro/quickstart/): https://helm.sh/ko/docs/intro/quickstart/
+[6](https://helm.sh/ko/docs/intro/using_helm/): https://helm.sh/ko/docs/intro/using_helm/
+[1](https://helm.sh/ko/docs/topics/charts/): https://helm.sh/ko/docs/topics/charts/
+[2](https://helm.sh/ko/docs/chart_best_practices/templates/): https://helm.sh/ko/docs/chart_best_practices/templates/
