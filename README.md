@@ -489,3 +489,57 @@ Grafana에서 kube-proxy 메트릭을 시각화하는 예시 대시보드는 다
 이렇게 설정하면 kube-proxy의 성능을 실시간으로 모니터링하고, 문제를 조기에 감지할 수 있습니다. 더 궁금한 점이 있으면 언제든지 질문해 주세요! 😊
 
 [1](https://www.inflearn.com/community/questions/1009425/kube-proxy-metric%EC%84%A4%EC%A0%95%EC%97%90-%EA%B4%80%ED%95%9C-%EC%A7%88%EB%AC%B8%EC%9E%85%EB%8B%88%EB%8B%A4): https://kubernetes.io/ko/docs/reference/command-line-tools-reference/kube-proxy/
+
+###kube-proxy의 성능을 최적화하는 몇 가지 방법###
+주요 방법 중 하나는 **IPVS 모드**를 사용하는 것입니다. IPVS는 iptables에 비해 더 나은 성능과 확장성을 제공하며, 대규모 클러스터에서의 네트워크 요청을 효율적으로 처리할 수 있습니다[1](https://velog.io/@koyum0213/Kubernetes%EC%9D%98-Service-Kube-proxy).
+
+### 주요 최적화 방법
+
+1. **IPVS 모드 사용**:
+   - IPVS는 해시 테이블을 이용해 요청을 처리하며, 이를 통해 짧은 시간 안에 요청을 빠르게 라우팅할 수 있습니다. IPVS 모드를 사용하려면 kube-proxy 설정 파일에서 `mode`를 `ipvs`로 설정합니다:
+     ```yaml
+     apiVersion: kubeproxy.config.k8s.io/v1alpha1
+     kind: KubeProxyConfiguration
+     mode: "ipvs"
+     ```
+
+2. **동기화 주기 최적화**:
+   - kube-proxy의 동기화 주기를 최적화하여 성능을 향상시킬 수 있습니다. `iptablesSyncPeriod`와 같은 파라미터를 조정하여 네트워크 규칙의 동기화 빈도를 설정합니다:
+     ```yaml
+     apiVersion: kubeproxy.config.k8s.io/v1alpha1
+     kind: KubeProxyConfiguration
+     iptablesSyncPeriod: "30s"
+     ```
+
+3. **리소스 제한 설정**:
+   - kube-proxy의 CPU 및 메모리 사용량을 제한하여 다른 애플리케이션에 영향을 주지 않도록 할 수 있습니다. 예를 들어, kube-proxy의 리소스 제한을 설정하려면 다음과 같이 합니다:
+     ```yaml
+     apiVersion: v1
+     kind: Pod
+     metadata:
+       name: kube-proxy
+     spec:
+       containers:
+       - name: kube-proxy
+         resources:
+           limits:
+             cpu: "500m"
+             memory: "256Mi"
+           requests:
+             cpu: "200m"
+             memory: "128Mi"
+     ```
+
+4. **네트워크 플러그인 최적화**:
+   - 네트워크 플러그인을 최적화하여 성능을 향상시킬 수 있습니다. 예를 들어, Calico와 같은 고성능 네트워크 플러그인을 사용하면 네트워크 성능을 개선할 수 있습니다[2](https://docs.redhat.com/ko/documentation/openshift_container_platform/4.8/html/networking/configuring-kube-proxy).
+
+### 참고 자료
+- [Kubernetes의 Service - Kube proxy, DNS, Readiness Probe](https://velog.io/@koyum0213/Kubernetes%EC%9D%98-Service-Kube-proxy)
+- [Red Hat Product Documentation](https://docs.redhat.com/ko/documentation/openshift_container_platform/4.8/html/networking/configuring-kube-proxy)
+- [Enhancing Kube-Proxy Efficiency in Kubernetes Networking](https://granulate.io/blog/enhancing-kube-proxy-efficiency-in-kubernetes-networking/)
+
+이 방법들을 통해 kube-proxy의 성능을 최적화할 수 있습니다. 더 궁금한 점이 있으면 언제든지 질문해 주세요! 😊
+
+[1](https://velog.io/@koyum0213/Kubernetes%EC%9D%98-Service-Kube-proxy): https://velog.io/@koyum0213/Kubernetes%EC%9D%98-Service-Kube-proxy
+[2](https://docs.redhat.com/ko/documentation/openshift_container_platform/4.8/html/networking/configuring-kube-proxy): https://docs.redhat.com/ko/documentation/openshift_container_platform/4.8/html/networking/configuring-kube-proxy
+[3](https://granulate.io/blog/enhancing-kube-proxy-efficiency-in-kubernetes-networking/): https://granulate.io/blog/enhancing-kube-proxy-efficiency-in-kubernetes-networking/
