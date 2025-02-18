@@ -318,3 +318,104 @@ Helm을 사용하여 비밀(Secrets)을 관리하는 방법은 다음과 같습�
 [6](https://helm.sh/ko/docs/intro/using_helm/): https://helm.sh/ko/docs/intro/using_helm/
 [1](https://helm.sh/ko/docs/topics/charts/): https://helm.sh/ko/docs/topics/charts/
 [2](https://helm.sh/ko/docs/chart_best_practices/templates/): https://helm.sh/ko/docs/chart_best_practices/templates/
+
+### 템플릿에서 조건문 사용법
+
+Helm 템플릿에서 조건문을 사용하면 특정 조건에 따라 리소스를 생성하거나 설정을 변경할 수 있습니다. Go 템플릿 언어를 사용하여 조건문을 작성합니다. 주요 조건문 예시는 다음과 같습니다:
+
+1. **if 조건문**:
+   - 특정 조건이 참일 때만 리소스를 생성합니다.
+   ```yaml
+   apiVersion: v1
+   kind: ConfigMap
+   metadata:
+     name: my-config
+   data:
+     {{- if .Values.enabled }}
+     key: value
+     {{- end }}
+   ```
+
+2. **if-else 조건문**:
+   - 조건이 참일 때와 거짓일 때 각각 다른 리소스를 생성합니다.
+   ```yaml
+   apiVersion: v1
+   kind: ConfigMap
+   metadata:
+     name: my-config
+   data:
+     {{- if .Values.enabled }}
+     key: enabled-value
+     {{- else }}
+     key: disabled-value
+     {{- end }}
+   ```
+
+3. **with 조건문**:
+   - 특정 값이 존재할 때만 해당 블록을 실행합니다.
+   ```yaml
+   apiVersion: v1
+   kind: ConfigMap
+   metadata:
+     name: my-config
+   data:
+     {{- with .Values.config }}
+     key: {{ .key }}
+     {{- end }}
+   ```
+
+4. **range 조건문**:
+   - 리스트나 맵을 반복하여 리소스를 생성합니다.
+   ```yaml
+   apiVersion: v1
+   kind: ConfigMap
+   metadata:
+     name: my-config
+   data:
+     {{- range $key, $value := .Values.configs }}
+     {{ $key }}: {{ $value }}
+     {{- end }}
+   ```
+
+이러한 조건문을 사용하면 Helm 템플릿을 더욱 유연하게 작성할 수 있습니다[1](https://helm.sh/ko/docs/chart_template_guide/function_list/)[2](https://velog.io/@showui96/Helm-차트-템플릿-가이드-1-명령어와-내장-객체).
+
+### Helm으로 모니터링 설정하는 법
+
+Helm을 사용하여 모니터링 도구를 설치하고 설정하는 방법은 다음과 같습니다. Prometheus와 Grafana를 예로 들어 설명하겠습니다.
+
+1. **Helm 저장소 추가**:
+   - Prometheus와 Grafana 차트를 포함하는 Helm 저장소를 추가합니다.
+   ```bash
+   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+   helm repo add grafana https://grafana.github.io/helm-charts
+   helm repo update
+   ```
+
+2. **Prometheus 설치**:
+   - Prometheus를 설치하여 쿠버네티스 클러스터의 메트릭을 수집합니다.
+   ```bash
+   helm install prometheus prometheus-community/prometheus
+   ```
+
+3. **Grafana 설치**:
+   - Grafana를 설치하여 Prometheus에서 수집한 메트릭을 시각화합니다.
+   ```bash
+   helm install grafana grafana/grafana
+   ```
+
+4. **Grafana 설정**:
+   - Grafana 웹 인터페이스에 접속하여 Prometheus를 데이터 소스로 추가합니다.
+     - **URL**: `http://prometheus-server:80`
+     - **Access**: `Server`
+
+5. **대시보드 생성**:
+   - Grafana에서 새로운 대시보드를 생성하고, Prometheus에서 수집한 메트릭을 시각화합니다. 예를 들어, kube-proxy 메트릭을 시각화할 수 있습니다.
+
+이렇게 하면 Helm을 사용하여 Prometheus와 Grafana를 설치하고, 쿠버네티스 클러스터의 모니터링을 설정할 수 있습니다[3](https://velog.io/@yerimm99/k8s-Helm%EC%9C%BC%EB%A1%9C-Kubernetes-%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0-%EC%84%A4%EC%B9%98%EB%B6%80%ED%84%B0-%EC%B0%A8%ED%8A%B8-%EB%B0%B0%ED%8F%AC%EA%B9%8C%EC%A7%80)[4](https://helm.sh/ko/docs/intro/quickstart/).
+
+더 궁금한 점이 있으면 언제든지 질문해 주세요! 😊
+
+[3](https://velog.io/@yerimm99/k8s-Helm%EC%9C%BC%EB%A1%9C-Kubernetes-%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0-%EC%84%A4%EC%B9%98%EB%B6%80%ED%84%B0-%EC%B0%A8%ED%8A%B8-%EB%B0%B0%ED%8F%AC%EA%B9%8C%EC%A7%80): https://helm.sh/ko/docs/intro/quickstart/
+[4](https://helm.sh/ko/docs/intro/quickstart/): https://velog.io/@yerimm99/k8s-Helm%EC%9C%BC%EB%A1%9C-Kubernetes-%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0-%EC%84%A4%EC%B9%98%EB%B6%80%ED%84%B0-%EC%B0%A8%ED%8A%B8-%EB%B0%B0%ED%8F%AC%EA%B9%8C%EC%A7%80
+[1](https://helm.sh/ko/docs/chart_template_guide/function_list/): https://helm.sh/ko/docs/chart_template_guide/function_list/
+[2](https://velog.io/@showui96/Helm-차트-템플릿-가이드-1-명령어와-내장-객체): https://velog.io/@showui96/Helm-차트-템플릿-가이드-1-명령어와-내장-객체
