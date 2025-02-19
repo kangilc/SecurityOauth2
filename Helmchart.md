@@ -70,7 +70,7 @@ spec:
 
 이 예시는 Nginx 애플리케이션을 배포하는 간단한 Helm Chart입니다. `values.yaml` 파일에서 기본 값을 설정하고, `templates/deployment.yaml` 파일에서 쿠버네티스 디플로이먼트를 정의합니다.
 
-Helm Chart를 사용하면 애플리케이션 배포를 자동화하고, 일관된 환경을 유지할 수 있습니다. 더 궁금한 점이 있으면 언제든지 질문해 주세요! 😊
+Helm Chart를 사용하면 애플리케이션 배포를 자동화하고, 일관된 환경을 유지할 수 있습니다. 
 
 ## Helm을 설치하는 방법
 Helm을 설치하는 방법은 여러 가지가 있습니다. 여기서는 가장 일반적인 방법인 스크립트를 사용한 설치와 패키지 매니저를 사용한 설치 방법을 설명해드릴게요.
@@ -123,7 +123,7 @@ chmod 700 get_helm.sh
 
 이 방법들을 통해 Helm을 설치할 수 있습니다. 설치 후에는 `helm version` 명령어를 사용하여 설치가 제대로 되었는지 확인할 수 있습니다.
 
-더 궁금한 점이 있으면 언제든지 질문해 주세요! 😊
+
 
 [1](https://helm.sh/ko/docs/intro/install/): https://helm.sh/ko/docs/intro/install/
 
@@ -233,7 +233,7 @@ Helm Chart를 배포하는 방법은 다음과 같습니다:
      helm upgrade <release-name> <chart-directory>
      ```
 
-이렇게 하면 Helm을 사용하여 쿠버네티스 애플리케이션을 쉽게 배포하고 관리할 수 있습니다. 더 궁금한 점이 있으면 언제든지 질문해 주세요! 😊
+이렇게 하면 Helm을 사용하여 쿠버네티스 애플리케이션을 쉽게 배포하고 관리할 수 있습니다. 
 
 [1](https://velog.io/@chappi/helm%EC%9D%84-%EB%B0%B0%EC%9B%8C%EB%B3%B4%EC%9E%90-3%EC%9D%BC%EC%B0%A8-%EC%84%A4%EC%B9%98%EC%99%80-%EC%8B%9C%EC%9E%91): https://helm.sh/ko/docs/intro/install/
 [2](https://bing.com/search?q=Helm+%ec%84%a4%ec%b9%98+%ed%9b%84+%ea%b8%b0%eb%b3%b8+%ec%84%a4%ec%a0%95): https://helm.sh/ko/docs/intro/using_helm/
@@ -310,7 +310,7 @@ Helm을 사용하여 비밀(Secrets)을 관리하는 방법은 다음과 같습�
 
 이렇게 하면 Helm을 사용하여 비밀을 안전하게 관리할 수 있습니다[5](https://helm.sh/ko/docs/intro/quickstart/)[6](https://helm.sh/ko/docs/intro/using_helm/).
 
-더 궁금한 점이 있으면 언제든지 질문해 주세요! 😊
+
 
 [3](https://velog.io/@captain-yun/Helm%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%9C-%EB%A1%A4%EB%B0%B1-%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C%EC%84%9C%EB%B9%84%EC%8A%A4%EB%A5%BC-%EC%9D%B4%EC%A0%84-%EC%83%81%ED%83%9C%EB%A1%9C-%EB%90%98%EB%8F%8C%EB%A6%AC%EA%B8%B0): https://velog.io/@captain-yun/Helm%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%9C-%EB%A1%A4%EB%B0%B1-%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C%EC%84%9C%EB%B9%84%EC%8A%A4%EB%A5%BC-%EC%9D%B4%EC%A0%84-%EC%83%81%ED%83%9C%EB%A1%9C-%EB%90%98%EB%8F%8C%EB%A6%AC%EA%B8%B0
 [4](https://helm.sh/ko/docs/helm/helm_rollback/): https://helm.sh/ko/docs/helm/helm_rollback/
@@ -413,7 +413,7 @@ Helm을 사용하여 모니터링 도구를 설치하고 설정하는 방법은 
 
 이렇게 하면 Helm을 사용하여 Prometheus와 Grafana를 설치하고, 쿠버네티스 클러스터의 모니터링을 설정할 수 있습니다[3](https://velog.io/@yerimm99/k8s-Helm%EC%9C%BC%EB%A1%9C-Kubernetes-%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0-%EC%84%A4%EC%B9%98%EB%B6%80%ED%84%B0-%EC%B0%A8%ED%8A%B8-%EB%B0%B0%ED%8F%AC%EA%B9%8C%EC%A7%80)[4](https://helm.sh/ko/docs/intro/quickstart/).
 
-더 궁금한 점이 있으면 언제든지 질문해 주세요! 😊
+
 
 [3](https://velog.io/@yerimm99/k8s-Helm%EC%9C%BC%EB%A1%9C-Kubernetes-%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0-%EC%84%A4%EC%B9%98%EB%B6%80%ED%84%B0-%EC%B0%A8%ED%8A%B8-%EB%B0%B0%ED%8F%AC%EA%B9%8C%EC%A7%80): https://helm.sh/ko/docs/intro/quickstart/
 [4](https://helm.sh/ko/docs/intro/quickstart/): https://velog.io/@yerimm99/k8s-Helm%EC%9C%BC%EB%A1%9C-Kubernetes-%EA%B4%80%EB%A6%AC%ED%95%98%EA%B8%B0-%EC%84%A4%EC%B9%98%EB%B6%80%ED%84%B0-%EC%B0%A8%ED%8A%B8-%EB%B0%B0%ED%8F%AC%EA%B9%8C%EC%A7%80
@@ -522,7 +522,7 @@ Grafana 대시보드 템플릿을 사용하면 미리 정의된 대시보드를 
 4. **대시보드 커스터마이징**:
    - 가져온 대시보드를 필요에 맞게 수정하고, 새로운 패널을 추가하거나 기존 패널을 수정할 수 있습니다[4](https://docs.kakaocloud.com/tutorial/observability/grafana-monitoring)[5](https://bing.com/search?q=Grafana+%eb%8c%80%ec%8b%9c%eb%b3%b4%eb%93%9c+%ed%85%9c%ed%94%8c%eb%a6%bf+%ec%82%ac%ec%9a%a9%eb%b2%95).
 
-이렇게 하면 Grafana 대시보드 템플릿을 사용하여 모니터링 대시보드를 쉽게 구성할 수 있습니다. 더 궁금한 점이 있으면 언제든지 질문해 주세요! 😊
+이렇게 하면 Grafana 대시보드 템플릿을 사용하여 모니터링 대시보드를 쉽게 구성할 수 있습니다. 
 
 [1](https://helm.sh/ko/docs/intro/quickstart/): https://helm.sh/ko/docs/intro/quickstart/
 [2](https://apronsksk.tistory.com/5): https://prometheus.io/docs/introduction/overview/
