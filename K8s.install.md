@@ -1,4 +1,4 @@
-로컬 환경에서 Kubernetes, Jenkins, Argo CD, Grafana를 설치하고 사용하는 방법을 단계별로 설명드리겠습니다.
+로컬 환경에서 Kubernetes, Helm Chart, Jenkins, Argo CD, Grafana를 설치하고 사용하는 방법을 단계별로 설명드리겠습니다.
 
 ### 1. Kubernetes 설치
 로컬 환경에서 Kubernetes를 설치하려면 Minikube를 사용하는 것이 가장 간단합니다.
@@ -14,7 +14,23 @@
     minikube start
     ```
 
-### 2. Jenkins 설치
+### 2. Helm Chart 설치
+Helm은 Kubernetes 애플리케이션을 관리하는 패키지 매니저입니다.
+
+#### Helm 설치
+1. **Helm 설치**:
+    ```bash
+    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    chmod 700 get_helm.sh
+    ./get_helm.sh
+    ```
+2. **Helm Repository 추가**:
+    ```bash
+    helm repo add stable https://charts.helm.sh/stable
+    helm repo update
+    ```
+
+### 3. Jenkins 설치
 Jenkins는 Java 기반의 CI/CD 도구로, 로컬 환경에 설치할 수 있습니다.
 
 #### Jenkins 설치
@@ -31,7 +47,7 @@ Jenkins는 Java 기반의 CI/CD 도구로, 로컬 환경에 설치할 수 있습
     sudo systemctl enable jenkins
     ```
 
-### 3. Argo CD 설치
+### 4. Argo CD 설치
 Argo CD는 Kubernetes 클러스터에 애플리케이션을 배포하는 GitOps 도구입니다.
 
 #### Argo CD 설치
@@ -46,7 +62,7 @@ Argo CD는 Kubernetes 클러스터에 애플리케이션을 배포하는 GitOps 
     ```
     브라우저에서 `https://localhost:8080`으로 접속합니다.
 
-### 4. Grafana 설치
+### 5. Grafana 설치
 Grafana는 시각화 도구로, 다양한 데이터 소스를 시각화할 수 있습니다.
 
 #### Grafana 설치
@@ -69,6 +85,12 @@ Grafana는 시각화 도구로, 다양한 데이터 소스를 시각화할 수 �
     ```bash
     kubectl run nginx --image=nginx --port=80
     kubectl expose pod nginx --type=NodePort
+    ```
+
+#### Helm Chart
+- **MySQL Helm Chart 배포**:
+    ```bash
+    helm install my-mysql stable/mysql
     ```
 
 #### Jenkins
@@ -105,7 +127,7 @@ Grafana는 시각화 도구로, 다양한 데이터 소스를 시각화할 수 �
 - **대시보드 생성**:
     Grafana UI에서 새로운 대시보드를 생성하고, 데이터 소스를 추가하여 시각화를 설정합니다.
 
-이 과정을 통해 로컬 환경에서 Kubernetes, Jenkins, Argo CD, Grafana를 설치하고 사용할 수 있습니다. 
+이 과정을 통해 로컬 환경에서 Kubernetes, Helm Chart, Jenkins, Argo CD, Grafana를 설치하고 사용할 수 있습니다.
 
 원본: Copilot과의 대화, 2025. 2. 20.
 (1) github.com. https://github.com/rim-wood/blog/tree/47bfdc70422a41ebb98fb5d5d9cf9818a012aebe/source%2F_posts%2Fjenkins%2Fjenkins.md.
