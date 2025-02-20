@@ -196,4 +196,35 @@ TLS를 사용하여 Argo CD 서버와 클라이언트 간의 통신을 암호화
 
 [1](https://blog.pages.kr/3061): [Argo CD 사용자 계정 및 기본 설정](https://blog.pages.kr/3061)
 [2](https://www.sktenterprise.com/bizInsight/blogDetail/dev/2606): [AWS EKS-연재8: Argo CD 설치 및 설정](https://www.sktenterprise.com/bizInsight/blogDetail/dev/2606)
+
+### Filebeat와 Kibana를 통합
+
+1. **Elasticsearch 설정**: Filebeat가 수집한 로그 데이터를 Elasticsearch에 전송하도록 설정합니다. Filebeat 설정 파일(`filebeat.yml`)에서 `output.elasticsearch` 섹션을 구성합니다.
+    ```yaml
+    output.elasticsearch:
+      hosts: ["http://localhost:9200"]
+    ```
+
+2. **Kibana 설정**: Kibana가 Elasticsearch 데이터를 시각화할 수 있도록 설정합니다. Kibana 설정 파일(`kibana.yml`)에서 `elasticsearch.hosts`를 지정합니다.
+    ```yaml
+    elasticsearch.hosts: ["http://localhost:9200"]
+    ```
+
+3. **Filebeat 시작**: Filebeat를 시작하여 로그 데이터를 수집하고 Elasticsearch로 전송합니다.
+    ```bash
+    sudo service filebeat start
+    ```
+
+4. **Kibana에서 데이터 확인**: Kibana 웹 인터페이스에 접속하여 `Discover` 탭에서 Filebeat가 전송한 로그 데이터를 확인합니다.
+
+이 과정을 통해 Filebeat와 Kibana를 통합하여 로그 데이터를 시각화할 수 있습니다¹(https://www.elastic.co/kr/blog/whats-new-elasticsearch-kibana-cloud-7-16-0)²(https://pyromaniac.me/entry/Kibana-%EC%82%AC%EC%9A%A9%EB%B2%95-2-ELK-%ED%86%B5%ED%95%A9-%EC%97%B0%EB%8F%99-%EB%B0%8F-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D).
+
+추가로 궁금한 점이 있으면 언제든지 물어보세요! 😊
+
+¹(https://www.elastic.co/kr/blog/whats-new-elasticsearch-kibana-cloud-7-16-0): [Elastic Blog](https://www.elastic.co/kr/blog/whats-new-elasticsearch-kibana-cloud-7-16-0)
+²(https://pyromaniac.me/entry/Kibana-%EC%82%AC%EC%9A%A9%EB%B2%95-2-ELK-%ED%86%B5%ED%95%A9-%EC%97%B0%EB%8F%99-%EB%B0%8F-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D): [Pyromaniac Blog](https://pyromaniac.me/entry/Kibana-%EC%82%AC%EC%9A%A9%EB%B2%95-2-ELK-%ED%86%B5%ED%95%A9-%EC%97%B0%EB%8F%99-%EB%B0%8F-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D)
+
+원본: Copilot과의 대화, 2025. 2. 20.
+(1) Elasticsearch, Kibana, Elastic Cloud 7.16: 통합 및 실행 가능한 인사이트. https://www.elastic.co/kr/blog/whats-new-elasticsearch-kibana-cloud-7-16-0.
+(2) Kibana 사용법 #2 (ELK 통합 연동 및 데이터 분석). https://pyromaniac.me/entry/Kibana-%EC%82%AC%EC%9A%A9%EB%B2%95-2-ELK-%ED%86%B5%ED%95%A9-%EC%97%B0%EB%8F%99-%EB%B0%8F-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D.
 [3](https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment): [Argo CD 설치 및 설정](https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment)
