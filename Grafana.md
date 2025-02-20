@@ -85,3 +85,73 @@ Grafana와 Kibana는 모두 데이터 시각화 도구이지만, 그 목적과 �
 [5](https://betterstack.com/community/comparisons/grafana-vs-kibana/): https://betterstack.com/community/comparisons/grafana-vs-kibana/
 [1](https://grafana.com/docs/grafana/latest/setup-grafana/installation/): https://grafana.com/docs/grafana/latest/setup-grafana/installation/
 [2](https://grafana.com/docs/grafana/latest/setup-grafana/installation/windows/): https://grafana.com/docs/grafana/latest/setup-grafana/installation/windows/
+
+Kubernetes에서 특정 Pod에서 지연 발생 알람이 5회 이상 발생했을 때 다른 서비스의 Pod 수량을 조절하는 방법은 Prometheus, Alertmanager, 그리고 Horizontal Pod Autoscaler (HPA)를 함께 사용하는 것입니다. 다음은 그 방법을 단계별로 설명드리겠습니다:
+
+### 1. Prometheus 및 Alertmanager 설정
+먼저, Prometheus와 Alertmanager를 설정하여 지연 발생 알람을 모니터링합니다.
+
+#### Prometheus 설정
+1. **Prometheus 설치**:
+    ```bash
+    helm install prometheus stable/prometheus
+    ```
+2. **Prometheus 설정 파일 수정**:
+    Prometheus 설정 파일에서 지연 발생 알람 규칙을 추가합니다. 여기서 알람이 5회 이상 발생했을 때 트리거되도록 설정합니다.
+    ```yaml
+    groups:
+    - name: example
+      rules:
+      - alert: HighLatency
+        expr: increase(http_request_duration_seconds_count[5m]) > 5
+        for: 5m
+        labels:
+          severity: page
+        annotations:
+          summary: "High request latency detected more than 5 times"
+    ```
+
+#### Alertmanager 설정
+1. **Alertmanager 설치**:
+    ```bash
+    helm install alertmanager stable/alertmanager
+    ```
+2. **Alertmanager 설정 파일 수정**:
+    Alertmanager 설정 파일에서 알람 수신 및 처리 방법을 정의합니다.
+    ```yaml
+    route:
+      group_by: ['alertname']
+      receiver: 'slack-notifications'
+    receivers:
+    - name: 'slack-notifications'
+      slack_configs:
+      - send_resolved: true
+        channel: '#alerts'
+        api_url: 'https://hooks.slack.com/services/...'
+    ```
+
+### 2. Horizontal Pod Autoscaler 설정
+HPA를 사용하여 특정 서비스의 Pod 수량을 자동으로 조절합니다.
+
+1. **HPA 설정**:
+    ```bash
+    kubectl autoscale deployment <deployment-name> --cpu-percent=50 --min=1 --max=10
+    ```
+    이 명령어는 CPU 사용률이 50%를 초과할 때 Pod 수량을 자동으로 조절합니다.
+
+### 3. 알람 기반 스케일링
+Prometheus와 Alertmanager를 사용하여 지연 발생 알람을 감지하고, HPA를 통해 Pod 수량을 조절합니다.
+
+1. **알람 트리거**:
+    Prometheus에서 지연 발생 알람이 5회 이상 감지되면 Alertmanager로 알람을 전송합니다.
+2. **HPA 조절**:
+    Alertmanager에서 알람을 수신하면, HPA를 통해 특정 서비스의 Pod 수량을 조절합니다.
+
+이 과정을 통해 지연 발생 알람이 5회 이상 올 때 특정 서비스의 Pod 수량을 자동으로 조절할 수 있습니다.
+
+¹(https://velog.io/@wanny328/kubernetes-Prometheus-Alertmanager%EB%A5%BC-%ED%86%B5%ED%95%9C-Alert-%EA%B8%B0%EB%8A%A5-%EC%A0%81%EC%9A%A9-%EB%B0%A9%EB%B2%95): [벨로그](https://velog.io/@wanny328/kubernetes-Prometheus-Alertmanager%EB%A5%BC-%ED%86%B5%ED%95%9C-Alert-%EA%B8%B0%EB%8A%A5-%EC%A0%81%EC%9A%A9-%EB%B0%A9%EB%B2%95)
+²(https://velog.io/@litiblue/Kubernetes-Pod-%EC%A0%95%EC%83%81%EC%83%81%ED%83%9C-%EC%A0%90%EA%B2%80-Probe-%EC%82%AC%EC%9A%A9): [벨로그](https://velog.io/@litiblue/Kubernetes-Pod-%EC%A0%95%EC%83%81%EC%83%81%ED%83%9C-%EC%A0%90%EA%B2%80-Probe-%EC%82%AC%EC%9A%A9)
+
+원본: Copilot과의 대화, 2025. 2. 20.
+(1) [kubernetes] Prometheus - Alertmanager를 통한 Alert 기능 적용 방법 - 벨로그. https://velog.io/@wanny328/kubernetes-Prometheus-Alertmanager%EB%A5%BC-%ED%86%B5%ED%95%9C-Alert-%EA%B8%B0%EB%8A%A5-%EC%A0%81%EC%9A%A9-%EB%B0%A9%EB%B2%95.
+(2) Kubernetes Pod 정상상태 점검 - Probe 사용 - 벨로그. https://velog.io/@litiblue/Kubernetes-Pod-%EC%A0%95%EC%83%81%EC%83%81%ED%83%9C-%EC%A0%90%EA%B2%80-Probe-%EC%82%AC%EC%9A%A9.
