@@ -219,8 +219,6 @@ TLS를 사용하여 Argo CD 서버와 클라이언트 간의 통신을 암호화
 
 이 과정을 통해 Filebeat와 Kibana를 통합하여 로그 데이터를 시각화할 수 있습니다¹(https://www.elastic.co/kr/blog/whats-new-elasticsearch-kibana-cloud-7-16-0)²(https://pyromaniac.me/entry/Kibana-%EC%82%AC%EC%9A%A9%EB%B2%95-2-ELK-%ED%86%B5%ED%95%A9-%EC%97%B0%EB%8F%99-%EB%B0%8F-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D).
 
-추가로 궁금한 점이 있으면 언제든지 물어보세요! 😊
-
 ¹(https://www.elastic.co/kr/blog/whats-new-elasticsearch-kibana-cloud-7-16-0): [Elastic Blog](https://www.elastic.co/kr/blog/whats-new-elasticsearch-kibana-cloud-7-16-0)
 ²(https://pyromaniac.me/entry/Kibana-%EC%82%AC%EC%9A%A9%EB%B2%95-2-ELK-%ED%86%B5%ED%95%A9-%EC%97%B0%EB%8F%99-%EB%B0%8F-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D): [Pyromaniac Blog](https://pyromaniac.me/entry/Kibana-%EC%82%AC%EC%9A%A9%EB%B2%95-2-ELK-%ED%86%B5%ED%95%A9-%EC%97%B0%EB%8F%99-%EB%B0%8F-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D)
 
@@ -228,3 +226,63 @@ TLS를 사용하여 Argo CD 서버와 클라이언트 간의 통신을 암호화
 (1) Elasticsearch, Kibana, Elastic Cloud 7.16: 통합 및 실행 가능한 인사이트. https://www.elastic.co/kr/blog/whats-new-elasticsearch-kibana-cloud-7-16-0.
 (2) Kibana 사용법 #2 (ELK 통합 연동 및 데이터 분석). https://pyromaniac.me/entry/Kibana-%EC%82%AC%EC%9A%A9%EB%B2%95-2-ELK-%ED%86%B5%ED%95%A9-%EC%97%B0%EB%8F%99-%EB%B0%8F-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D.
 [3](https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment): [Argo CD 설치 및 설정](https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment)
+
+## 아르고 시디에서 파드를 늘리는 방법을 알고 싶어
+Argo CD를 사용하여 파드를 늘리는 방법은 GitOps 방식을 통해 Kubernetes 리소스를 선언적으로 관리하는 것입니다. 이를 위해 Deployment 매니페스트 파일을 수정하여 파드 수를 조정할 수 있습니다. 다음은 그 과정에 대한 예시입니다:
+
+### 1. Deployment 매니페스트 파일 수정
+먼저, Git 리포지토리에 있는 Deployment 매니페스트 파일을 수정하여 `replicas` 값을 원하는 파드 수로 변경합니다. 예를 들어, 파드 수를 10개로 늘리려면 다음과 같이 수정합니다:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example-deployment
+spec:
+  replicas: 10  # 원하는 파드 수
+  selector:
+    matchLabels:
+      app: example
+  template:
+    metadata:
+      labels:
+        app: example
+    spec:
+      containers:
+      - name: example-container
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+```
+
+### 2. Git 리포지토리에 변경 사항 커밋
+수정한 매니페스트 파일을 Git 리포지토리에 커밋하고 푸시합니다:
+
+```sh
+git add deployment.yaml
+git commit -m "Increase replicas to 10"
+git push origin main
+```
+
+### 3. Argo CD에서 동기화
+Argo CD는 Git 리포지토리의 변경 사항을 감지하고 Kubernetes 클러스터에 적용합니다. Argo CD UI 또는 CLI를 사용하여 애플리케이션을 동기화할 수 있습니다.
+
+#### Argo CD UI에서 동기화
+1. Argo CD UI에 로그인합니다.
+2. 변경된 애플리케이션을 선택합니다.
+3. "Sync" 버튼을 클릭하여 변경 사항을 동기화합니다.
+
+#### Argo CD CLI에서 동기화
+Argo CD CLI를 사용하여 동기화할 수도 있습니다:
+```sh
+argocd app sync example-app
+```
+
+이 과정을 통해 Argo CD가 Git 리포지토리의 변경 사항을 Kubernetes 클러스터에 적용하여 파드 수를 늘리게 됩니다¹(https://velog.io/@squarebird/Argo-CD-%EA%B0%9C%EB%85%90-%EB%B0%8F-%EC%84%A4%EC%B9%98)²(https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment).
+
+¹(https://velog.io/@squarebird/Argo-CD-%EA%B0%9C%EB%85%90-%EB%B0%8F-%EC%84%A4%EC%B9%98): [Argo CD 개념 및 설치 - 벨로그](https://velog.io/@squarebird/Argo-CD-%EA%B0%9C%EB%85%90-%EB%B0%8F-%EC%84%A4%EC%B9%98)
+²(https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment): [Argo CD 설치 및 설정 - 벨로그](https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment)
+
+원본: Copilot과의 대화, 2025. 2. 24.
+(1) Argo CD 개념 및 설치 - 벨로그. https://velog.io/@squarebird/Argo-CD-%EA%B0%9C%EB%85%90-%EB%B0%8F-%EC%84%A4%EC%B9%98.
+(2) Argo CD 설치 및 설정 - 벨로그. https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment.
