@@ -54,3 +54,72 @@ wsl -l -o
 
 원본: Copilot과의 대화, 2025. 2. 24.
 (1) WSL 설치 | Microsoft Learn. https://learn.microsoft.com/ko-kr/windows/wsl/install.
+
+## linux systemd 기반으로 변경하고 싶어
+Linux 시스템을 systemd 기반으로 변경하려면 다음 단계를 따르세요. 이 과정은 기존의 init 시스템을 systemd로 대체하는 것을 포함합니다. 주의: 이 작업은 시스템에 중요한 영향을 미칠 수 있으므로, 변경 전에 중요한 데이터를 백업하는 것이 좋습니다.
+
+### 1. systemd 설치
+대부분의 최신 Linux 배포판에는 이미 systemd가 설치되어 있습니다. 만약 설치되어 있지 않다면, 다음 명령어를 사용하여 설치할 수 있습니다:
+
+#### Debian/Ubuntu
+```sh
+sudo apt-get update
+sudo apt-get install systemd
+```
+
+#### CentOS/RHEL
+```sh
+sudo yum install systemd
+```
+
+### 2. 기본 init 시스템 변경
+systemd를 기본 init 시스템으로 설정하려면 다음 단계를 따르세요:
+
+#### Debian/Ubuntu
+1. **GRUB 설정 파일 수정**:
+   ```sh
+   sudo nano /etc/default/grub
+   ```
+2. **GRUB_CMDLINE_LINUX_DEFAULT** 라인에 `init=/lib/systemd/systemd` 추가:
+   ```sh
+   GRUB_CMDLINE_LINUX_DEFAULT="quiet splash init=/lib/systemd/systemd"
+   ```
+3. **GRUB 업데이트**:
+   ```sh
+   sudo update-grub
+   ```
+
+#### CentOS/RHEL
+1. **GRUB 설정 파일 수정**:
+   ```sh
+   sudo nano /etc/default/grub
+   ```
+2. **GRUB_CMDLINE_LINUX** 라인에 `init=/lib/systemd/systemd` 추가:
+   ```sh
+   GRUB_CMDLINE_LINUX="rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet init=/lib/systemd/systemd"
+   ```
+3. **GRUB2 구성 파일 생성**:
+   ```sh
+   sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+   ```
+
+### 3. 시스템 재부팅
+변경 사항을 적용하려면 시스템을 재부팅합니다:
+```sh
+sudo reboot
+```
+
+### 4. systemd 확인
+시스템이 재부팅된 후, 다음 명령어를 사용하여 systemd가 제대로 작동하는지 확인합니다:
+```sh
+systemctl --version
+```
+
+이 단계를 통해 Linux 시스템을 systemd 기반으로 변경할 수 있습니다¹(https://ko.linux-terminal.com/?p=3557)²(https://ko.linux-console.net/?p=5807). 추가로 궁금한 점이 있으면 언제든지 말씀해 주세요!
+
+¹(https://ko.linux-terminal.com/?p=3557): [Systemd on Linux - 서비스, 실행 수준 및 로그 관리](https://ko.linux-terminal.com/?p=3557)
+²(https://ko.linux-console.net/?p=5807): [Systemctl을 사용하여 Systemd 서비스 및 단위를 관리하는 방법](https://ko.linux-console.net/?p=5807)
+
+원본: Copilot과의 대화, 2025. 2. 24.
+(1) Systemd on Linux - 서비스, 실행 수준 및 로그 관리. https://ko.linux-terminal.com/?p=3557.
+(2) Systemctl을 사용하여 Systemd 서비스 및 단위를 관리하는 방법. https://ko.linux-console.net/?p=5807.
