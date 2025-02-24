@@ -41,13 +41,21 @@ Jenkins는 Java 기반의 CI/CD 도구로, 로컬 환경에 설치할 수 있습
 1. **Jenkins 설치**:
     ```bash
     wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+    ```
+    ```bash
     sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+    ```
+    ```bash
     sudo apt-get update
+    ```
+    ```bash
     sudo apt-get install jenkins
     ```
 2. **Jenkins 시작**:
     ```bash
     sudo systemctl start jenkins
+    ```
+    ```bash
     sudo systemctl enable jenkins
     ```
 
