@@ -58,7 +58,7 @@ Jenkins는 Java 기반의 CI/CD 도구로, 로컬 환경에 설치할 수 있습
     ```bash
     sudo systemctl enable jenkins
     ```
-Ubuntu에서 Jenkins를 설치하는 방법을 안내해드릴게요. 다음 단계를 따라 Jenkins를 설치하고 설정할 수 있습니다:
+## Ubuntu에서 Jenkins를 설치
 
 ### 1. 시스템 업데이트
 먼저, 시스템 패키지를 업데이트합니다:
@@ -87,6 +87,8 @@ echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins
 패키지 목록을 업데이트하고 Jenkins를 설치합니다:
 ```sh
 sudo apt-get update
+```
+```sh
 sudo apt-get install jenkins -y
 ```
 
@@ -94,6 +96,8 @@ sudo apt-get install jenkins -y
 Jenkins 서비스를 시작하고 부팅 시 자동으로 시작되도록 활성화합니다:
 ```sh
 sudo systemctl start jenkins
+```
+```sh
 sudo systemctl enable jenkins
 ```
 
@@ -101,6 +105,8 @@ sudo systemctl enable jenkins
 Jenkins는 기본적으로 포트 8080을 사용합니다. UFW를 사용하여 포트를 허용합니다:
 ```sh
 sudo ufw allow 8080
+```
+```sh
 sudo ufw enable
 ```
 
