@@ -123,3 +123,77 @@ systemctl --version
 원본: Copilot과의 대화, 2025. 2. 24.
 (1) Systemd on Linux - 서비스, 실행 수준 및 로그 관리. https://ko.linux-terminal.com/?p=3557.
 (2) Systemctl을 사용하여 Systemd 서비스 및 단위를 관리하는 방법. https://ko.linux-console.net/?p=5807.
+
+## Doeck 설치
+
+WSL(Windows Subsystem for Linux)에서 Docker를 설치하는 방법을 안내해드릴게요. 다음 단계를 따라 WSL2 환경에서 Docker를 설치하고 사용할 수 있습니다:
+
+### 1. WSL2 설치 및 설정
+먼저, WSL2를 설치하고 설정합니다. 관리자 권한으로 PowerShell을 열고 다음 명령어를 실행하세요:
+```sh
+wsl --install
+wsl --set-default-version 2
+```
+
+### 2. 리눅스 배포판 설치
+Microsoft Store에서 원하는 리눅스 배포판(예: Ubuntu 22.04 LTS)을 설치합니다. 설치 과정에서 사용자 이름과 비밀번호를 지정합니다.
+
+### 3. Docker 설치
+리눅스 배포판에서 Docker를 설치합니다. WSL2에서 Ubuntu를 사용하는 예시입니다:
+
+1. **Docker 패키지 저장소 추가**:
+   ```sh
+   sudo apt-get update
+   sudo apt-get install \
+     ca-certificates \
+     curl \
+     gnupg \
+     lsb-release
+
+   sudo mkdir -p /etc/apt/keyrings
+   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+   echo \
+     "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+     $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+   ```
+
+2. **Docker 엔진 설치**:
+   ```sh
+   sudo apt-get update
+   sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+   ```
+
+3. **Docker 데몬 시작**:
+   ```sh
+   sudo service docker start
+   ```
+
+4. **Docker 설치 확인**:
+   ```sh
+   sudo docker run hello-world
+   ```
+
+### 4. systemd 활성화 (선택 사항)
+WSL2에서 systemd를 활성화하려면 `/etc/wsl.conf` 파일을 수정합니다:
+```sh
+sudo nano /etc/wsl.conf
+```
+다음 내용을 추가합니다:
+```ini
+[boot]
+systemd=true
+```
+변경 사항을 적용하려면 WSL을 다시 시작합니다:
+```sh
+wsl --shutdown
+wsl
+```
+
+이 단계를 통해 WSL2 환경에서 Docker를 설치하고 사용할 수 있습니다¹(https://blog.naver.com/PostView.nhn?blogId=ilikebigmac&logNo=222007741507)²(https://www.lainyzine.com/ko/article/how-to-install-docker-on-wsl/). 추가로 궁금한 점이 있으면 언제든지 말씀해 주세요!
+
+¹(https://blog.naver.com/PostView.nhn?blogId=ilikebigmac&logNo=222007741507): [WSL2 설치 및 Docker 환경 구축 - 네이버 블로그](https://blog.naver.com/PostView.nhn?blogId=ilikebigmac&logNo=222007741507)
+²(https://www.lainyzine.com/ko/article/how-to-install-docker-on-wsl/): [윈도우 WSL에서 Docker 설치하는 방법 - LainyZine](https://www.lainyzine.com/ko/article/how-to-install-docker-on-wsl/)
+
+원본: Copilot과의 대화, 2025. 2. 24.
+(1) WSL2 설치 및 Docker 환경 구축 - 네이버 블로그. https://blog.naver.com/PostView.nhn?blogId=ilikebigmac&logNo=222007741507.
+(2) 윈도우 WSL에서 Docker 설치하는 방법 - LainyZine. https://www.lainyzine.com/ko/article/how-to-install-docker-on-wsl/.
