@@ -124,7 +124,7 @@ systemctl --version
 (1) Systemd on Linux - 서비스, 실행 수준 및 로그 관리. https://ko.linux-terminal.com/?p=3557.
 (2) Systemctl을 사용하여 Systemd 서비스 및 단위를 관리하는 방법. https://ko.linux-console.net/?p=5807.
 
-## Doeck 설치
+## Wsl linux ubuntu Docker 설치
 
 WSL(Windows Subsystem for Linux)에서 Docker를 설치하는 방법을 안내해드릴게요. 다음 단계를 따라 WSL2 환경에서 Docker를 설치하고 사용할 수 있습니다:
 
