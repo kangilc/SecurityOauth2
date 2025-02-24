@@ -58,6 +58,68 @@ Jenkins는 Java 기반의 CI/CD 도구로, 로컬 환경에 설치할 수 있습
     ```bash
     sudo systemctl enable jenkins
     ```
+Ubuntu에서 Jenkins를 설치하는 방법을 안내해드릴게요. 다음 단계를 따라 Jenkins를 설치하고 설정할 수 있습니다:
+
+### 1. 시스템 업데이트
+먼저, 시스템 패키지를 업데이트합니다:
+```sh
+sudo apt-get update
+```
+
+### 2. Java 설치
+Jenkins는 Java 기반이므로 Java를 설치해야 합니다. 기본 JDK를 설치합니다:
+```sh
+sudo apt-get install default-jdk -y
+```
+
+### 3. Jenkins 저장소 추가
+Jenkins의 GPG 키를 추가합니다:
+```sh
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+```
+
+Jenkins 저장소를 추가합니다:
+```sh
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+```
+
+### 4. Jenkins 설치
+패키지 목록을 업데이트하고 Jenkins를 설치합니다:
+```sh
+sudo apt-get update
+sudo apt-get install jenkins -y
+```
+
+### 5. Jenkins 시작 및 활성화
+Jenkins 서비스를 시작하고 부팅 시 자동으로 시작되도록 활성화합니다:
+```sh
+sudo systemctl start jenkins
+sudo systemctl enable jenkins
+```
+
+### 6. 방화벽 설정
+Jenkins는 기본적으로 포트 8080을 사용합니다. UFW를 사용하여 포트를 허용합니다:
+```sh
+sudo ufw allow 8080
+sudo ufw enable
+```
+
+### 7. Jenkins 초기 설정
+웹 브라우저를 열고 `http://<your_server_ip>:8080`에 접속합니다. 초기 관리자 비밀번호를 입력해야 합니다. 비밀번호는 다음 명령어로 확인할 수 있습니다:
+```sh
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+```
+
+비밀번호를 입력하고 "계속"을 클릭합니다. 제안된 플러그인을 설치하고, 관리자 계정을 생성한 후 Jenkins를 사용할 수 있습니다¹(https://ko.linux-console.net/?p=15037)²(https://bing.com/search?q=Ubuntu+jenkins+%ec%84%a4%ec%b9%98).
+
+이 단계를 통해 Ubuntu에 Jenkins를 설치하고 설정할 수 있습니다. 추가로 궁금한 점이 있으면 언제든지 말씀해 주세요!
+
+¹(https://ko.linux-console.net/?p=15037): [Ubuntu 22.04에서 Jenkins를 설치하고 구성하는 방법](https://ko.linux-console.net/?p=15037)
+²(https://bing.com/search?q=Ubuntu+jenkins+%ec%84%a4%ec%b9%98): [Ubuntu에 Jenkins 설치 - 벨로그](https://bing.com/search?q=Ubuntu+jenkins+%ec%84%a4%ec%b9%98)
+
+원본: Copilot과의 대화, 2025. 2. 24.
+(1) Ubuntu 22.04에서 Jenkins를 설치하고 구성하는 방법 - Linux-Console.net. https://ko.linux-console.net/?p=15037.
+(2) Ubuntu에 Jenkins 설치 - 벨로그. https://bing.com/search?q=Ubuntu+jenkins+%ec%84%a4%ec%b9%98.
 
 ### 4. Argo CD 설치
 Argo CD는 Kubernetes 클러스터에 애플리케이션을 배포하는 GitOps 도구입니다.
