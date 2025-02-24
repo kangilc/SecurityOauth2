@@ -21,7 +21,11 @@ Helm은 Kubernetes 애플리케이션을 관리하는 패키지 매니저입니�
 1. **Helm 설치**:
     ```bash
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    ```
+    ```bash
     chmod 700 get_helm.sh
+    ```
+    ```bash
     ./get_helm.sh
     ```
 2. **Helm Repository 추가**:
