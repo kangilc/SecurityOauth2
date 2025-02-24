@@ -200,8 +200,10 @@ wsl
 
 ## minikube start error 내용
 
+```sh
 docker: Not healthy: "docker version --format {{.Server.Os}}-{{.Server.Version}}:{{.Server.Platform.Name}}" exit status 1: permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.48/version": dial unix /var/run/docker.sock: connect: permission denied
     ▪ docker: Suggestion: Add your user to the 'docker' group: 'sudo usermod -aG docker $USER && newgrp docker' <https://docs.docker.com/engine/install/linux-postinstall/>
+```
 이 오류 메시지는 Docker 데몬에 접근할 권한이 없어서 발생한 문제입니다. 이를 해결하려면 다음 단계를 따르세요:
 
 ### 1. 사용자 계정을 Docker 그룹에 추가
