@@ -59,6 +59,7 @@ Jenkins는 Java 기반의 CI/CD 도구로, 로컬 환경에 설치할 수 있습
     sudo systemctl enable jenkins
     ```
 ## Ubuntu에서 Jenkins를 설치
+3번에서 오류가 발생하는 경우 아래와 같은 순서로 Ubuntu 기반 설치 방법을 새로 정리
 
 ### 1. 시스템 업데이트
 먼저, 시스템 패키지를 업데이트합니다:
