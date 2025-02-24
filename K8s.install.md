@@ -128,6 +128,48 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 (1) Ubuntu 22.04에서 Jenkins를 설치하고 구성하는 방법 - Linux-Console.net. https://ko.linux-console.net/?p=15037.
 (2) Ubuntu에 Jenkins 설치 - 벨로그. https://bing.com/search?q=Ubuntu+jenkins+%ec%84%a4%ec%b9%98.
 
+### 8. Jenkins GPG 관련 오류
+GPG 키 문제를 해결하려면 다음 단계를 따르세요:
+
+### 1. GPG 키 추가
+누락된 GPG 키를 추가합니다. 오류 메시지에서 제공된 키 ID를 사용합니다. 예를 들어, 키 ID가 `5BA31D57EF5975CA`인 경우:
+```sh
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 5BA31D57EF5975CA
+```
+
+### 2. GPG 키 파일로 추가
+GPG 키를 파일로 다운로드하고 추가할 수도 있습니다:
+```sh
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+```
+
+### 3. 저장소 추가
+GPG 키를 추가한 후, Jenkins 저장소를 추가합니다:
+```sh
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+```
+
+### 4. 패키지 목록 업데이트
+패키지 목록을 업데이트합니다:
+```sh
+sudo apt-get update
+```
+
+### 5. Jenkins 설치
+Jenkins를 설치합니다:
+```sh
+sudo apt-get install jenkins -y
+```
+
+이 단계를 통해 GPG 키 문제를 해결하고 Jenkins를 설치할 수 있습니다¹(https://ko.linux-console.net/?p=15176)²(https://blog.naver.com/PostView.naver?blogId=4glac&logNo=223202876234). 추가로 궁금한 점이 있으면 언제든지 말씀해 주세요!
+
+¹(https://ko.linux-console.net/?p=15176): [도커 GPG 오류 해결 명령어 - 네이버 블로그](https://blog.naver.com/PostView.naver?blogId=4glac&logNo=223202876234)
+²(https://blog.naver.com/PostView.naver?blogId=4glac&logNo=223202876234): [Ubuntu에서 GPG ERROR NO_PUBKEY 에러 해결방법](https://blog.logger.one/entry/Ubuntu-%EC%97%90%EC%84%9C-GPG-ERROR-NOPUBKEY-%EC%97%90%EB%9F%AC-%ED%95%B4%EA%B2%B0%EB%B0%A9%EB%B2%95)
+
+원본: Copilot과의 대화, 2025. 2. 24.
+(1) gpg 해결 방법: 암호 해독 실패: 비밀 키 오류 없음 - Linux-Console.net. https://ko.linux-console.net/?p=15176.
+(2) 도커 GPG 오류(GPG Error) 해결 명령어 - 네이버 블로그. https://blog.naver.com/PostView.naver?blogId=4glac&logNo=223202876234.
+
 ### 4. Argo CD 설치
 Argo CD는 Kubernetes 클러스터에 애플리케이션을 배포하는 GitOps 도구입니다.
 
