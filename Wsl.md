@@ -197,3 +197,33 @@ wsl
 원본: Copilot과의 대화, 2025. 2. 24.
 (1) WSL2 설치 및 Docker 환경 구축 - 네이버 블로그. https://blog.naver.com/PostView.nhn?blogId=ilikebigmac&logNo=222007741507.
 (2) 윈도우 WSL에서 Docker 설치하는 방법 - LainyZine. https://www.lainyzine.com/ko/article/how-to-install-docker-on-wsl/.
+
+## minikube start error 내용
+
+이 오류 메시지는 Docker 데몬에 접근할 권한이 없어서 발생한 문제입니다. 이를 해결하려면 다음 단계를 따르세요:
+
+### 1. 사용자 계정을 Docker 그룹에 추가
+Docker 소켓에 접근할 수 있도록 현재 사용자를 Docker 그룹에 추가합니다:
+```sh
+sudo usermod -aG docker $USER
+```
+
+### 2. 그룹 변경 적용
+변경 사항을 적용하려면 현재 셸 세션을 새로 고치거나 다시 로그인합니다:
+```sh
+newgrp docker
+```
+
+### 3. Docker 데몬 상태 확인
+Docker 데몬이 정상적으로 실행 중인지 확인합니다:
+```sh
+sudo systemctl status docker
+```
+
+### 4. Minikube 다시 시작
+Docker 데몬이 정상적으로 실행 중이라면, Minikube를 다시 시작합니다:
+```sh
+minikube start
+```
+
+이 단계를 통해 Docker 데몬에 접근할 수 있는 권한을 설정하고 Minikube를 정상적으로 실행할 수 있습니다. 추가로 궁금한 점이 있으면 언제든지 말씀해 주세요!
