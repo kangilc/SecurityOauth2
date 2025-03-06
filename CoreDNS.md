@@ -43,5 +43,7 @@ CoreDNS 장애 시 발생할 수 있는 주요 현상은 다음과 같습니다:
 이러한 문제를 예방하고 해결하기 위해서는 CoreDNS의 상태를 지속적으로 모니터링하고, 필요 시 적절한 조치를 취하는 것이 중요합니다.
 
 [2](https://velog.io/@yieon/CoreDNS-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0): [CoreDNS 문제 해결하기](https://velog.io/@yieon/CoreDNS-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0)
+
 [1](https://repost.aws/ko/knowledge-center/eks-dns-failure): [Amazon EKS로 DNS 장애 문제 해결](https://repost.aws/ko/knowledge-center/eks-dns-failure)
+
 [3](https://stackoverflow.com/questions/54466359/coredns-crashloopbackoff-in-kubernetes): [CoreDNS CrashLoopBackOff 문제](https://stackoverflow.com/questions/54466359/coredns-crashloopbackoff-in-kubernetes)
