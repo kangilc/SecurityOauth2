@@ -47,3 +47,22 @@ CoreDNS 장애 시 발생할 수 있는 주요 현상은 다음과 같습니다:
 [1](https://repost.aws/ko/knowledge-center/eks-dns-failure): [Amazon EKS로 DNS 장애 문제 해결](https://repost.aws/ko/knowledge-center/eks-dns-failure)
 
 [3](https://stackoverflow.com/questions/54466359/coredns-crashloopbackoff-in-kubernetes): [CoreDNS CrashLoopBackOff 문제](https://stackoverflow.com/questions/54466359/coredns-crashloopbackoff-in-kubernetes)
+
+## core dns 장애인지 확인 할 수 있는 방법
+CoreDNS 장애를 확인하는 방법은 여러 가지가 있습니다. 다음은 주요 방법들입니다:
+
+1. **Pod 상태 확인**: CoreDNS Pod가 정상적으로 실행되고 있는지 확인합니다. `kubectl get pods -n kube-system -l k8s-app=kube-dns` 명령어를 사용하여 Pod의 상태를 확인할 수 있습니다[1](https://jonnung.dev/kubernetes/2020/05/11/kubernetes-dns-about-coredns/).
+
+2. **로그 확인**: CoreDNS의 로그를 확인하여 에러 메시지가 있는지 확인합니다. `kubectl logs -n kube-system -l k8s-app=kube-dns` 명령어를 사용하여 로그를 확인할 수 있습니다[1](https://jonnung.dev/kubernetes/2020/05/11/kubernetes-dns-about-coredns/).
+
+3. **헬스 체크**: CoreDNS의 헬스 체크 엔드포인트를 확인합니다. Corefile 설정에서 `health` 플러그인을 사용하여 헬스 체크를 설정할 수 있으며, `/health` 엔드포인트를 통해 상태를 확인할 수 있습니다[2](https://bing.com/search?q=CoreDNS+%ec%9e%a5%ec%95%a0+%ed%99%95%ec%9d%b8+%eb%b0%a9%eb%b2%95).
+
+4. **메트릭 확인**: Prometheus와 같은 모니터링 도구를 사용하여 CoreDNS의 메트릭을 수집하고 분석합니다. Corefile 설정에서 `prometheus` 플러그인을 사용하여 메트릭을 수집할 수 있습니다[2](https://bing.com/search?q=CoreDNS+%ec%9e%a5%ec%95%a0+%ed%99%95%ec%9d%b8+%eb%b0%a9%eb%b2%95).
+
+5. **DNS 쿼리 테스트**: 클러스터 내에서 DNS 쿼리를 실행하여 응답이 정상적으로 오는지 확인합니다. 예를 들어, `kubectl exec -n <namespace> <pod> -- nslookup <service>` 명령어를 사용하여 DNS 쿼리를 테스트할 수 있습니다[1](https://jonnung.dev/kubernetes/2020/05/11/kubernetes-dns-about-coredns/).
+
+이러한 방법들을 통해 CoreDNS의 장애 여부를 확인하고, 필요한 조치를 취할 수 있습니다.
+
+[2](https://bing.com/search?q=CoreDNS+%ec%9e%a5%ec%95%a0+%ed%99%95%ec%9d%b8+%eb%b0%a9%eb%b2%95): [Kubernetes의 DNS, CoreDNS를 알아보자](https://jonnung.dev/kubernetes/2020/05/11/kubernetes-dns-about-coredns/)
+
+[1](https://jonnung.dev/kubernetes/2020/05/11/kubernetes-dns-about-coredns/): [CoreDNS 문제 해결하기](https://velog.io/@dokdom/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-coreDNSkube-DNS-%EB%8F%99%EC%9E%91-%ED%99%95%EC%9D%B8)
