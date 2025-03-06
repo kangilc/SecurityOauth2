@@ -42,9 +42,9 @@ CoreDNS 장애 시 발생할 수 있는 주요 현상은 다음과 같습니다:
 
 이러한 문제를 예방하고 해결하기 위해서는 CoreDNS의 상태를 지속적으로 모니터링하고, 필요 시 적절한 조치를 취하는 것이 중요합니다.
 
-[2](https://velog.io/@yieon/CoreDNS-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0): [CoreDNS 문제 해결하기](https://velog.io/@yieon/CoreDNS-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0)
-
 [1](https://repost.aws/ko/knowledge-center/eks-dns-failure): [Amazon EKS로 DNS 장애 문제 해결](https://repost.aws/ko/knowledge-center/eks-dns-failure)
+
+[2](https://velog.io/@yieon/CoreDNS-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0): [CoreDNS 문제 해결하기](https://velog.io/@yieon/CoreDNS-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0)
 
 [3](https://stackoverflow.com/questions/54466359/coredns-crashloopbackoff-in-kubernetes): [CoreDNS CrashLoopBackOff 문제](https://stackoverflow.com/questions/54466359/coredns-crashloopbackoff-in-kubernetes)
 
@@ -63,6 +63,8 @@ CoreDNS 장애를 확인하는 방법은 여러 가지가 있습니다. 다음�
 
 이러한 방법들을 통해 CoreDNS의 장애 여부를 확인하고, 필요한 조치를 취할 수 있습니다.
 
+[1](https://jonnung.dev/kubernetes/2020/05/11/kubernetes-dns-about-coredns/): [CoreDNS 문제 해결하기](https://velog.io/@dokdom/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-coreDNSkube-DNS-%EB%8F%99%EC%9E%91-%ED%99%95%EC%9D%B8)
+
 [2](https://bing.com/search?q=CoreDNS+%ec%9e%a5%ec%95%a0+%ed%99%95%ec%9d%b8+%eb%b0%a9%eb%b2%95): [Kubernetes의 DNS, CoreDNS를 알아보자](https://jonnung.dev/kubernetes/2020/05/11/kubernetes-dns-about-coredns/)
 
-[1](https://jonnung.dev/kubernetes/2020/05/11/kubernetes-dns-about-coredns/): [CoreDNS 문제 해결하기](https://velog.io/@dokdom/%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4-coreDNSkube-DNS-%EB%8F%99%EC%9E%91-%ED%99%95%EC%9D%B8)
+
