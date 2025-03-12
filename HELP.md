@@ -1,7 +1,5 @@
 ## java 실행 명령어 Help
-**
-nohup java -XX:+UseG1GC -Xlog:gc -XX:+PrintFlagsFinal -Dlog4j2.contextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector -Djava.net.preferIPv4Stack=true -jar sdp-rdx-normal.jar 1>/logs001/abc/abc-normal.log 2>&1 &
-**
+**nohup java -XX:+UseG1GC -Xlog:gc -XX:+PrintFlagsFinal -Dlog4j2.contextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector -Djava.net.preferIPv4Stack=true -jar sdp-rdx-normal.jar 1>/logs001/abc/abc-normal.log 2>&1 &**
 
 이 명령어는 `nohup`을 사용하여 백그라운드에서 Java 애플리케이션을 실행하는 방법을 보여줍니다. 각 옵션의 역할을 설명드릴게요:
 
