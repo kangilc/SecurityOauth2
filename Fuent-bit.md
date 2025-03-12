@@ -69,5 +69,7 @@ Fluent Bit의 Elasticsearch 출력 플러그인 설정에서 로그 유실 문�
 이러한 설정을 통해 로그 유실 문제를 줄이고, Fluent Bit과 Elasticsearch 간의 통신을 최적화할 수 있습니다. 
 
 [1](https://docs.fluentbit.io/manual/pipeline/outputs/elasticsearch): [Fluent Bit Elasticsearch Output Plugin Documentation](https://docs.fluentbit.io/manual/pipeline/outputs/elasticsearch)
+
 [2](https://fluentbit.net/fluent-bit-operations-and-best-practices/): [Fluent Bit Operations and Best Practices](https://fluentbit.net/fluent-bit-operations-and-best-practices/)
+
 [3](https://github.com/fluent/fluent-bit-docs/blob/master/pipeline/outputs/elasticsearch.md): [Fluent Bit Common Issues and Solutions](https://github.com/fluent/fluent-bit/issues/2664)
