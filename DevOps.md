@@ -38,8 +38,10 @@ DevOps 환경에서 Jenkins, Helm, Kubernetes Manifest, 그리고 ArgoCD는 CI/C
 3. **Helm 차트 업데이트**: Jenkins가 업데이트된 Helm 차트를 Git 저장소에 푸시합니다.
 4. **ArgoCD 배포**: ArgoCD가 Git 저장소의 변경 사항을 감지하고, Kubernetes 클러스터에 새로운 버전을 배포합니다.
 
-이러한 도구들이 유기적으로 연동되어 DevOps 파이프라인을 자동화하고, 애플리케이션의 지속적인 배포와 관리를 가능하게 합니다. 추가적인 도움이 필요하면 언제든지 말씀해 주세요! 😊
+이러한 도구들이 유기적으로 연동되어 DevOps 파이프라인을 자동화하고, 애플리케이션의 지속적인 배포와 관리를 가능하게 합니다.
 
 [1](https://github.com/DevOpsGodd/Ci-cd-with-jenkins-and-argocd): [Jenkins와 ArgoCD를 사용한 CI/CD 파이프라인 설정](https://github.com/DevOpsGodd/Ci-cd-with-jenkins-and-argocd)
+
 [2](https://github.com/SahadevDahit/cicd-jenkins-helm-argocd): [Helm 차트와 Kubernetes Manifest 관리](https://github.com/SahadevDahit/cicd-jenkins-helm-argocd)
+
 [3](https://stackoverflow.com/questions/78691670/deploying-an-application-using-argo-cd-without-git-helm-repo): [ArgoCD를 사용한 GitOps 배포](https://stackoverflow.com/questions/78691670/deploying-an-application-using-argo-cd-without-git-helm-repo)
