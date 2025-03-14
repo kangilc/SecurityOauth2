@@ -525,7 +525,32 @@ Grafana 대시보드 템플릿을 사용하면 미리 정의된 대시보드를 
 이렇게 하면 Grafana 대시보드 템플릿을 사용하여 모니터링 대시보드를 쉽게 구성할 수 있습니다. 
 
 [1](https://helm.sh/ko/docs/intro/quickstart/): https://helm.sh/ko/docs/intro/quickstart/
+
 [2](https://apronsksk.tistory.com/5): https://prometheus.io/docs/introduction/overview/
+
 [3](https://helm.sh/ko/docs/intro/using_helm/): https://velog.io/@mag000225/Prometheus-Prometheus%EB%9E%80
+
 [4](https://docs.kakaocloud.com/tutorial/observability/grafana-monitoring): https://docs.kakaocloud.com/tutorial/observability/grafana-monitoring
+
 [5](https://bing.com/search?q=Grafana+%eb%8c%80%ec%8b%9c%eb%b3%b4%eb%93%9c+%ed%85%9c%ed%94%8c%eb%a6%bf+%ec%82%ac%ec%9a%a9%eb%b2%95): https://grafana.com/grafana/dashboards/
+
+## NGINX Ingress 컨트롤러
+NGINX Ingress 컨트롤러는 Kubernetes 클러스터에서 HTTP 및 HTTPS 트래픽을 관리하고 라우팅하는 데 사용됩니다. 이 컨트롤러는 다양한 알고리즘을 사용하여 트래픽을 효과적으로 분산시킵니다. 주요 알고리즘은 다음과 같습니다:
+
+1. **라운드 로빈(Round Robin)**:
+   - 가장 기본적인 로드 밸런싱 알고리즘으로, 각 요청을 순차적으로 백엔드 서버에 분배합니다. 모든 서버에 균등하게 트래픽을 분산시키는 방식입니다[1](https://docs.nginx.com/nginx-ingress-controller/overview/about/).
+
+2. **최소 연결(Least Connections)**:
+   - 현재 연결 수가 가장 적은 서버로 트래픽을 분배합니다. 이는 서버 간의 부하를 균등하게 유지하는 데 유리합니다[1](https://docs.nginx.com/nginx-ingress-controller/overview/about/).
+
+3. **EWMA(Exponentially Weighted Moving Average)**:
+   - 지수 가중 이동 평균을 사용하여 서버의 응답 시간을 기반으로 트래픽을 분배합니다. 최근 응답 시간이 짧은 서버에 더 많은 트래픽을 할당하여 성능을 최적화합니다[1](https://docs.nginx.com/nginx-ingress-controller/overview/about/).
+
+4. **IP 해시(IP Hash)**:
+   - 클라이언트의 IP 주소를 해시하여 특정 서버에 트래픽을 분배합니다. 이는 동일한 클라이언트가 항상 동일한 서버에 연결되도록 보장합니다[1](https://docs.nginx.com/nginx-ingress-controller/overview/about/).
+
+이 알고리즘들은 NGINX Ingress 컨트롤러의 설정을 통해 선택할 수 있으며, 각 알고리즘은 특정 상황에서 최적의 성능을 제공할 수 있습니다. 예를 들어, EWMA 알고리즘은 응답 시간이 중요한 애플리케이션에 유리하며, IP 해시는 세션 지속성이 필요한 경우에 유용합니다[2](https://docs.nginx.com/nginx-ingress-controller/overview/design/).
+
+[1](https://docs.nginx.com/nginx-ingress-controller/overview/about/): [NGINX Ingress Controller Overview](https://docs.nginx.com/nginx-ingress-controller/overview/about/)
+
+[2](https://docs.nginx.com/nginx-ingress-controller/overview/design/): [The design of NGINX Ingress Controller](https://docs.nginx.com/nginx-ingress-controller/overview/design/)
