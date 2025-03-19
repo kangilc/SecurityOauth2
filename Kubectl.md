@@ -85,3 +85,31 @@ Kubernetes 클러스터를 관리할 때 유용한 `kubectl` 명령어들을 모
   ```sh
   kubectl cluster-info
   ```
+Kubernetes에서 노드에 Taint가 있는지 확인하려면 `kubectl` 명령어를 사용할 수 있습니다. 다음은 노드의 Taint를 확인하는 방법입니다:
+
+### **1. 모든 노드의 Taint 확인**
+모든 노드의 Taint를 확인하려면 다음 명령어를 사용합니다:
+```sh
+kubectl get nodes -o json | jq '.items[] | {name: .metadata.name, taints: .spec.taints}'
+```
+이 명령어는 모든 노드의 이름과 Taint를 JSON 형식으로 출력합니다.
+
+### **2. 특정 노드의 Taint 확인**
+특정 노드의 Taint를 확인하려면 다음 명령어를 사용합니다:
+```sh
+kubectl describe node <node-name>
+```
+이 명령어는 해당 노드의 상세 정보를 출력하며, Taint 정보도 포함됩니다.
+
+### **3. Taint 정보 필터링**
+특정 노드의 Taint 정보만 필터링하려면 다음 명령어를 사용합니다:
+```sh
+kubectl get node <node-name> -o json | jq '.spec.taints'
+```
+이 명령어는 해당 노드의 Taint 정보를 JSON 형식으로 출력합니다.
+
+### **예시**
+```sh
+kubectl describe node <node-name>
+```
+이 명령어를 실행하면 노드의 Taint 정보가 포함된 상세 정보를 확인할 수 있습니다.
