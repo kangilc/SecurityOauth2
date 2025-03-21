@@ -359,9 +359,7 @@ argocd app sync example-app
 [3](https://argo-cd.readthedocs.io/en/release-3.0/user-guide/environment-variables/).
 
 
-###
-argocd login 10.109.142.162
-FATA[0040] dial tcp 10.109.142.162:443: i/o timeout
+### argocd login 10.109.142.162 => FATA[0040] dial tcp 10.109.142.162:443: i/o timeout
 
 `i/o timeout` 오류는 네트워크 연결 문제로 인해 발생할 수 있습니다. 다음 해결 방법들을 시도해 보세요:
 
@@ -385,4 +383,37 @@ FATA[0040] dial tcp 10.109.142.162:443: i/o timeout
      ```bash
      kubectl logs -n argocd <argocd-server-pod-name>
      ```
+
+### invalidated cache for resource in namespace: argocd with the name: argocd-notifications-cm
+
+`Invalidated cache for resource in namespace: argocd with the name: argocd-notifications-cm` 메시지는 ArgoCD가 해당 리소스의 캐시를 무효화했음을 나타냅니다. 이는 일반적으로 리소스가 변경되었거나 업데이트되었을 때 발생합니다.
+
+이 문제를 해결하려면 다음 방법들을 시도해 보세요:
+
+1. **캐시 강제 새로고침**:
+   - ArgoCD CLI를 사용하여 애플리케이션의 캐시를 강제로 새로고침할 수 있습니다:
+     ```bash
+     argocd app get <appName> --hard-refresh
+     ```
+
+2. **ArgoCD UI 사용**:
+   - ArgoCD UI에서 해당 애플리케이션을 선택하고 'Hard Refresh' 버튼을 클릭하여 캐시를 새로고침할 수 있습니다[1](https://github.com/argoproj/argo-cd/issues/914).
+
+3. **리소스 상태 확인**:
+   - `kubectl` 명령어를 사용하여 해당 리소스의 상태를 확인하고 문제가 있는지 점검합니다:
+     ```bash
+     kubectl get configmap argocd-notifications-cm -n argocd
+     ```
+
+4. **로그 확인**:
+   - ArgoCD 서버 로그를 확인하여 추가적인 오류 메시지를 찾을 수 있습니다:
+     ```bash
+     kubectl logs -n argocd <argocd-server-pod-name>
+     ```
+
+[2](https://github.com/argoproj/argo-cd/issues/18210)
+
+[1](https://github.com/argoproj/argo-cd/issues/914)
+
+[3](https://stackoverflow.com/questions/71164538/argocd-application-resource-stuck-at-deletion).
 
