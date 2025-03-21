@@ -524,3 +524,33 @@ https://ludiasset.com/entry/%EC%96%B4%EB%8F%84%EB%B9%84-%EB%AF%B8%EB%94%94%EC%96
 https://daegusubway.co.kr/matlab-%EB%AC%B4%EB%A3%8C-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-%EC%84%A4%EC%B9%98-%EC%99%84%EB%B2%BD-%EA%B0%80%EC%9D%B4%EB%93%9C-matlab-%EC%84%A4%EC%B9%98-%EB%AC%B4%EB%A3%8C-%EB%B2%84%EC%A0%84/
 
 https://m.blog.naver.com/gunetpc/223802153870
+
+# argo 삭제
+
+ArgoCD를 삭제하려면 다음 단계를 따라주세요:
+
+1. **ArgoCD 애플리케이션 삭제**:
+   - 먼저 ArgoCD에서 관리하는 애플리케이션을 삭제합니다:
+     ```bash
+     argocd app delete <appName>
+     ```
+
+2. **ArgoCD 설치 파일 삭제**:
+   - ArgoCD 설치 파일을 삭제합니다:
+     ```bash
+     kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+     ```
+
+3. **Namespace 삭제**:
+   - ArgoCD가 설치된 namespace를 삭제합니다:
+     ```bash
+     kubectl delete namespace argocd
+     ```
+
+4. **확인**:
+   - 모든 리소스가 삭제되었는지 확인합니다:
+     ```bash
+     kubectl get all -n argocd
+     ```
+
+[2](https://brunch.co.kr/@topasvga/1701)[1](https://bing.com/search?q=ArgoCD+%ec%82%ad%ec%a0%9c+%eb%b0%a9%eb%b2%95)[3](https://blog.naver.com/PostView.naver?blogId=rkttndk&logNo=223225663234).
