@@ -311,3 +311,29 @@ argocd app sync example-app
    - 사용자 이름을 `admin`으로 설정하고, 복구한 비밀번호를 사용하여 로그인해 보세요
    -
    - [1](https://www.unixcloudfusion.in/2023/04/solved-argocd-invalid-username-and.html)[2](https://stackoverflow.com/questions/68297354/what-is-the-default-password-of-argocd).
+
+### argocd account update-password FATA[0000] Argo CD server address unspecified
+
+`Argo CD server address unspecified` 오류는 ArgoCD 서버 주소를 지정하지 않았기 때문에 발생합니다. 다음 방법들을 시도해 보세요:
+
+1. **서버 주소 지정**:
+   - `argocd login` 명령어를 사용하여 ArgoCD 서버에 로그인할 때 서버 주소를 지정합니다:
+     ```bash
+     argocd login <ARGOCD_SERVER_ADDRESS>
+     ```
+
+2. **환경 변수 설정**:
+   - 환경 변수를 설정하여 서버 주소를 지정할 수 있습니다:
+     ```bash
+     export ARGOCD_SERVER=<ARGOCD_SERVER_ADDRESS>
+     ```
+
+3. **명령어에 서버 주소 포함**:
+   - `argocd account update-password` 명령어에 서버 주소를 포함하여 실행합니다:
+     ```bash
+     argocd account update-password --server <ARGOCD_SERVER_ADDRESS>
+     ```
+
+[1](https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment)
+[2](https://argo-cd.readthedocs.io/en/stable/operator-manual/server-commands/argocd-server/)
+[3](https://argo-cd.readthedocs.io/en/release-3.0/user-guide/environment-variables/).
