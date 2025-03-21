@@ -438,6 +438,40 @@ argocd app sync example-app
      ```
 
 4. **PodSecurityPolicy 제거**:
-   - PodSecurityPolicy가 더 이상 사용되지 않으므로, 관련 설정을 제거합니다[1](https://github.com/cert-manager/cert-manager/issues/5971).
+   - PodSecurityPolicy가 더 이상 사용되지 않으므로, 관련 설정을 제거합니다
 
-이 방법들이 도움이 되기를 바랍니다[2](https://stackoverflow.com/questions/55069793/pod-security-policy-not-working-as-intended)[3](https://stackoverflow.com/questions/53088808/how-to-check-if-pod-security-policy-is-enabled)[1](https://github.com/cert-manager/cert-manager/issues/5971). 문제가 계속 발생하면 추가적인 도움을 드릴 수 있습니다. 어떤 방법을 시도해 보시겠어요?
+[1](https://github.com/cert-manager/cert-manager/issues/5971).
+
+[2](https://stackoverflow.com/questions/55069793/pod-security-policy-not-working-as-intended)[3](https://stackoverflow.com/questions/53088808/how-to-check-if-pod-security-policy-is-enabled)
+
+
+## argocd-server LoadBalancer 10.109.142.162 80:31163/TCP,443:30635/TCP 4h2m loadbalancer 기능을 끄고 싶다
+
+ArgoCD의 LoadBalancer 기능을 비활성화하려면 다음 단계를 따라주세요:
+
+1. **서비스 타입 변경**:
+   - LoadBalancer 대신 ClusterIP 또는 NodePort로 서비스 타입을 변경할 수 있습니다. 예를 들어, ClusterIP로 변경하려면 다음 명령어를 사용합니다:
+     ```bash
+     kubectl edit svc argocd-server -n argocd
+     ```
+   - `type: LoadBalancer`를 `type: ClusterIP`로 변경하고 저장합니다.
+
+2. **서비스 재배포**:
+   - 서비스 타입을 변경한 후, 변경 사항을 적용하기 위해 서비스를 재배포합니다:
+     ```bash
+     kubectl apply -f <your-service-manifest>.yaml
+     ```
+
+3. **서비스 상태 확인**:
+   - 서비스가 정상적으로 변경되었는지 확인합니다:
+     ```bash
+     kubectl get svc -n argocd
+     ```
+
+이 단계를 따라 LoadBalancer 기능을 비활성화할 수 있습니다
+
+[1](https://stackoverflow.com/questions/32266053/how-to-specify-static-ip-address-for-kubernetes-load-balancer)
+
+[2](https://ygtoken.tistory.com/150)
+
+[3](https://stackoverflow.com/questions/44110876/kubernetes-service-external-ip-pending).
