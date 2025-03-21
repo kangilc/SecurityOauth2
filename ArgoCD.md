@@ -422,7 +422,7 @@ argocd app sync example-app
 1. **MetalLB 최신 버전 사용**:
    - MetalLB의 최신 버전을 사용하여 설치합니다. 최신 버전은 PodSecurityPolicy를 사용하지 않습니다:
      ```bash
-     kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.0/manifests/metallb.yaml
+     kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
      ```
 
 2. **Namespace 생성**:
