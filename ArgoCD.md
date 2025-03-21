@@ -358,3 +358,31 @@ argocd app sync example-app
 
 [3](https://argo-cd.readthedocs.io/en/release-3.0/user-guide/environment-variables/).
 
+
+###
+argocd login 10.109.142.162
+FATA[0040] dial tcp 10.109.142.162:443: i/o timeout
+
+`i/o timeout` 오류는 네트워크 연결 문제로 인해 발생할 수 있습니다. 다음 해결 방법들을 시도해 보세요:
+
+1. **네트워크 연결 확인**:
+   - ArgoCD 서버와 클라이언트 간의 네트워크 연결이 정상인지 확인하세요. 방화벽 설정이나 네트워크 정책이 연결을 차단하고 있을 수 있습니다[1](https://github.com/argoproj/argo-cd/issues/4174).
+
+2. **서비스 상태 확인**:
+   - ArgoCD 서버가 정상적으로 실행되고 있는지 확인하세요. 다음 명령어를 사용하여 서비스 상태를 확인할 수 있습니다:
+     ```bash
+     kubectl get pods -n argocd
+     ```
+
+3. **DNS 설정 확인**:
+   - DNS 설정이 올바른지 확인하세요. DNS 문제로 인해 서버를 찾지 못할 수 있습니다[2](https://github.com/argoproj/argo-cd/issues/15746).
+
+4. **포트 확인**:
+   - ArgoCD 서버가 올바른 포트에서 실행되고 있는지 확인하세요. 기본적으로 443 포트를 사용하지만, 다른 포트를 사용하고 있을 수 있습니다[3](https://stackoverflow.com/questions/73276522/argocd-transport-error-while-dialing-dial-tcp-lookup-argocd-repo-server).
+
+5. **로그 확인**:
+   - ArgoCD 서버 로그를 확인하여 추가적인 오류 메시지를 찾을 수 있습니다:
+     ```bash
+     kubectl logs -n argocd <argocd-server-pod-name>
+     ```
+
