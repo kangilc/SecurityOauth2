@@ -417,3 +417,8 @@ argocd app sync example-app
 
 [3](https://stackoverflow.com/questions/71164538/argocd-application-resource-stuck-at-deletion).
 
+MetalLB 설치:
+
+MetalLB를 설치하여 클러스터에 LoadBalancer 기능을 추가할 수 있습니다. MetalLB는 Kubernetes 클러스터에 IP 주소를 할당하는 데 사용됩니다1:
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
+
