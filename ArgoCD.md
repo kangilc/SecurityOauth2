@@ -554,3 +554,42 @@ ArgoCD를 삭제하려면 다음 단계를 따라주세요:
      ```
 
 [2](https://brunch.co.kr/@topasvga/1701)[1](https://bing.com/search?q=ArgoCD+%ec%82%ad%ec%a0%9c+%eb%b0%a9%eb%b2%95)[3](https://blog.naver.com/PostView.naver?blogId=rkttndk&logNo=223225663234).
+
+
+네, Minikube에서도 `argocd-server`의 타입을 `LoadBalancer`로 설정할 수 있습니다. 다만, Minikube는 기본적으로 로드 밸런서를 지원하지 않기 때문에 `minikube tunnel` 명령어를 사용해야 합니다. 다음은 단계별로 설명드릴게요:
+
+1. **Minikube 시작**:
+   Minikube를 시작합니다:
+   ```sh
+   minikube start
+   ```
+
+2. **Argo CD 설치**:
+   Argo CD를 설치합니다:
+   ```sh
+   kubectl create namespace argocd
+   kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+   ```
+
+3. **argocd-server 서비스 타입 변경**:
+   `argocd-server` 서비스의 타입을 `LoadBalancer`로 변경합니다:
+   ```sh
+   kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+   ```
+
+4. **Minikube 터널 실행**:
+   `minikube tunnel` 명령어를 실행하여 로드 밸런서 IP를 할당받습니다:
+   ```sh
+   minikube tunnel
+   ```
+
+5. **외부 IP 확인**:
+   `kubectl get svc -n argocd` 명령어를 사용하여 `argocd-server` 서비스의 외부 IP를 확인합니다:
+   ```sh
+   kubectl get svc -n argocd
+   ```
+
+이제 외부 IP를 통해 Argo CD 서버에 접근할 수 있습니다. 추가로 궁금한 점이 있으면 언제든지 말씀해 주세요! 😊
+
+[1](https://stackoverflow.com/questions/55462654/access-minikube-loadbalancer-service-from-host-machine): [Minikube LoadBalancer 서비스 접근 방법 - Stack Overflow](https://stackoverflow.com/questions/55462654/access-minikube-loadbalancer-service-from-host-machine)
+[2](https://stackoverflow.com/questions/67262769/access-argocd-server): [Argo CD 설치 및 설정 - Argo CD 공식 문서](https://argo-cd.readthedocs.io/en/release-3.0/getting_started/)
