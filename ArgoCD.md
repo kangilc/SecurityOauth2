@@ -286,3 +286,28 @@ argocd app sync example-app
 원본: Copilot과의 대화, 2025. 2. 24.
 (1) Argo CD 개념 및 설치 - 벨로그. https://velog.io/@squarebird/Argo-CD-%EA%B0%9C%EB%85%90-%EB%B0%8F-%EC%84%A4%EC%B9%98.
 (2) Argo CD 설치 및 설정 - 벨로그. https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment.
+
+이 문제는 여러 가지 원인으로 발생할 수 있습니다. 다음 해결 방법들을 시도해 보세요:
+
+1. **비밀번호 재확인**:
+   - 비밀번호를 다시 한 번 확인해 보세요. 비밀번호를 복구할 때 사용한 명령어가 정확한지 확인합니다:
+     ```bash
+     kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+     ```
+
+2. **Pod 이름 확인**:
+   - 비밀번호가 초기 관리자 비밀번호가 아닌 경우, ArgoCD 서버 Pod 이름을 사용해 보세요:
+     ```bash
+     kubectl exec -n argocd argocd-server-<pod-name> -- argocd admin initial-password
+     ```
+
+3. **비밀번호 재설정**:
+   - 비밀번호를 재설정하는 방법도 있습니다. 다음 명령어를 사용하여 비밀번호를 재설정해 보세요:
+     ```bash
+     kubectl -n argocd patch secret argocd-secret -p '{"stringData": { "admin.password": "<new-password>", "admin.passwordMtime": "'$(date +%FT%T%Z)'" }}'
+     ```
+
+4. **로그인 시도**:
+   - 사용자 이름을 `admin`으로 설정하고, 복구한 비밀번호를 사용하여 로그인해 보세요
+   -
+   - [1](https://www.unixcloudfusion.in/2023/04/solved-argocd-invalid-username-and.html)[2](https://stackoverflow.com/questions/68297354/what-is-the-default-password-of-argocd).
