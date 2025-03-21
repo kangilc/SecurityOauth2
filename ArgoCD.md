@@ -475,3 +475,52 @@ ArgoCD의 LoadBalancer 기능을 비활성화하려면 다음 단계를 따라�
 [2](https://ygtoken.tistory.com/150)
 
 [3](https://stackoverflow.com/questions/44110876/kubernetes-service-external-ip-pending).
+
+# MetalLB 최신 버전 설치
+
+MetalLB의 최신 버전을 설치하려면 다음 단계를 따라주세요:
+
+1. **Namespace 생성**:
+   - MetalLB를 위한 namespace를 먼저 생성합니다:
+     ```bash
+     kubectl create namespace metallb-system
+     ```
+
+2. **CRD 설치**:
+   - Custom Resource Definitions (CRDs)를 설치합니다:
+     ```bash
+     kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.0/manifests/metallb-crds.yaml
+     ```
+
+3. **MetalLB 설치**:
+   - MetalLB를 설치합니다:
+     ```bash
+     kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.0/manifests/metallb.yaml
+     ```
+
+4. **ConfigMap 설정**:
+   - MetalLB의 IP 주소 풀을 설정하는 ConfigMap을 생성합니다. 예를 들어, 다음과 같이 설정할 수 있습니다:
+     ```yaml
+     apiVersion: v1
+     kind: ConfigMap
+     metadata:
+       namespace: metallb-system
+       name: config
+     data:
+       config: |
+         address-pools:
+         - name: default
+           protocol: layer2
+           addresses:
+           - 192.168.1.240-192.168.1.250
+     ```
+   - 이 파일을 `metallb-config.yaml`로 저장한 후 적용합니다:
+     ```bash
+     kubectl apply -f metallb-config.yaml
+     ```
+
+https://ludiasset.com/entry/%EC%96%B4%EB%8F%84%EB%B9%84-%EB%AF%B8%EB%94%94%EC%96%B4-%EC%9D%B8%EC%BD%94%EB%8D%94-2024-%EC%B5%9C%EC%8B%A0%EB%B2%84%EC%A0%84-%EB%AC%B4%EB%A3%8C%EB%8B%A4%EC%9A%B4%ED%81%AC%EB%9E%99-%EC%A0%95%ED%92%88%EC%9D%B8%EC%A6%9D-%EC%84%A4%EC%B9%98%EB%B0%A9%EB%B2%95
+
+https://daegusubway.co.kr/matlab-%EB%AC%B4%EB%A3%8C-%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-%EC%84%A4%EC%B9%98-%EC%99%84%EB%B2%BD-%EA%B0%80%EC%9D%B4%EB%93%9C-matlab-%EC%84%A4%EC%B9%98-%EB%AC%B4%EB%A3%8C-%EB%B2%84%EC%A0%84/
+
+https://m.blog.naver.com/gunetpc/223802153870
