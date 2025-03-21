@@ -36,10 +36,18 @@ Argo CD를 설치하는 방법은 여러 가지가 있지만, 여기서는 가�
 6. **Argo CD UI 접속**:
    웹 브라우저에서 Argo CD UI에 접속합니다. 기본 URL은 `http://<ARGOCD_SERVER_IP>`입니다. 로그인 시 사용자 이름은 `admin`이며, 비밀번호는 이전 단계에서 확인한 비밀번호를 사용합니다.
 
-이렇게 하면 Argo CD를 설치하고 기본 설정을 완료할 수 있습니다[1](https://velog.io/@squarebird/Argo-CD-%EA%B0%9C%EB%85%90-%EB%B0%8F-%EC%84%A4%EC%B9%98)[2](https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment)[3](https://bing.com/search?q=Argo+CD+%ec%84%a4%ec%b9%98+%eb%b0%a9%eb%b2%95).
+이렇게 하면 Argo CD를 설치하고 기본 설정을 완료할 수 있습니다
+
+[1](https://velog.io/@squarebird/Argo-CD-%EA%B0%9C%EB%85%90-%EB%B0%8F-%EC%84%A4%EC%B9%98)
+
+[2](https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment)
+
+[3](https://bing.com/search?q=Argo+CD+%ec%84%a4%ec%b9%98+%eb%b0%a9%eb%b2%95).
 
 [1](https://velog.io/@squarebird/Argo-CD-%EA%B0%9C%EB%85%90-%EB%B0%8F-%EC%84%A4%EC%B9%98): [Argo CD 설치 가이드](https://velog.io/@squarebird/Argo-CD-%EA%B0%9C%EB%85%90-%EB%B0%8F-%EC%84%A4%EC%B9%98)
+
 [2](https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment): [Argo CD 설치 및 설정](https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment)
+
 [3](https://bing.com/search?q=Argo+CD+%ec%84%a4%ec%b9%98+%eb%b0%a9%eb%b2%95): [Argo CD 설치 방법](https://bing.com/search?q=Argo+CD+%ec%84%a4%ec%b9%98+%eb%b0%a9%eb%b2%95)
 
 Argo CD 설치 후 초기 설정 방법을 안내해드릴게요.
@@ -92,7 +100,9 @@ Argo CD 설치 후 초기 설정 방법을 안내해드릴게요.
 이렇게 하면 Argo CD의 초기 설정을 완료할 수 있습니다[1](https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment)[2](https://blog.pages.kr/3061)[3](https://bing.com/search?q=Argo+CD+%ec%b4%88%ea%b8%b0+%ec%84%a4%ec%a0%95+%eb%b0%a9%eb%b2%95). 
 
 [1](https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment): [Argo CD 설치 및 설정](https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment)
+
 [2](https://blog.pages.kr/3061): [Argo CD 사용자 계정 및 기본 설정](https://blog.pages.kr/3061)
+
 [3](https://bing.com/search?q=Argo+CD+%ec%b4%88%ea%b8%b0+%ec%84%a4%ec%a0%95+%eb%b0%a9%eb%b2%95): [Argo CD 설치 방법](https://bing.com/search?q=Argo+CD+%ec%b4%88%ea%b8%b0+%ec%84%a4%ec%a0%95+%eb%b0%a9%eb%b2%95)
 
 Argo CD의 보안 설정은 매우 중요합니다. 여기 몇 가지 주요 보안 설정 방법을 안내해드릴게요.
@@ -195,6 +205,7 @@ TLS를 사용하여 Argo CD 서버와 클라이언트 간의 통신을 암호화
 이러한 설정을 통해 Argo CD의 보안을 강화할 수 있습니다[1](https://blog.pages.kr/3061)[2](https://www.sktenterprise.com/bizInsight/blogDetail/dev/2606)[3](https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment). 
 
 [1](https://blog.pages.kr/3061): [Argo CD 사용자 계정 및 기본 설정](https://blog.pages.kr/3061)
+
 [2](https://www.sktenterprise.com/bizInsight/blogDetail/dev/2606): [AWS EKS-연재8: Argo CD 설치 및 설정](https://www.sktenterprise.com/bizInsight/blogDetail/dev/2606)
 
 ### Filebeat와 Kibana를 통합
@@ -220,11 +231,15 @@ TLS를 사용하여 Argo CD 서버와 클라이언트 간의 통신을 암호화
 이 과정을 통해 Filebeat와 Kibana를 통합하여 로그 데이터를 시각화할 수 있습니다¹(https://www.elastic.co/kr/blog/whats-new-elasticsearch-kibana-cloud-7-16-0)²(https://pyromaniac.me/entry/Kibana-%EC%82%AC%EC%9A%A9%EB%B2%95-2-ELK-%ED%86%B5%ED%95%A9-%EC%97%B0%EB%8F%99-%EB%B0%8F-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D).
 
 ¹(https://www.elastic.co/kr/blog/whats-new-elasticsearch-kibana-cloud-7-16-0): [Elastic Blog](https://www.elastic.co/kr/blog/whats-new-elasticsearch-kibana-cloud-7-16-0)
-²(https://pyromaniac.me/entry/Kibana-%EC%82%AC%EC%9A%A9%EB%B2%95-2-ELK-%ED%86%B5%ED%95%A9-%EC%97%B0%EB%8F%99-%EB%B0%8F-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D): [Pyromaniac Blog](https://pyromaniac.me/entry/Kibana-%EC%82%AC%EC%9A%A9%EB%B2%95-2-ELK-%ED%86%B5%ED%95%A9-%EC%97%B0%EB%8F%99-%EB%B0%8F-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D)
+
+²(https://pyromaniac.me/entry/Kibana-%EC%82%AC%EC%9A%A9%EB%B2%95-2-ELK-%ED%86%B5%ED%95%A9-%EC%97%B0%EB%8F%99-%EB%B0%8F-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D): [Pyromaniac Blog]
+(https://pyromaniac.me/entry/Kibana-%EC%82%AC%EC%9A%A9%EB%B2%95-2-ELK-%ED%86%B5%ED%95%A9-%EC%97%B0%EB%8F%99-%EB%B0%8F-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D)
 
 원본: Copilot과의 대화, 2025. 2. 20.
 (1) Elasticsearch, Kibana, Elastic Cloud 7.16: 통합 및 실행 가능한 인사이트. https://www.elastic.co/kr/blog/whats-new-elasticsearch-kibana-cloud-7-16-0.
+
 (2) Kibana 사용법 #2 (ELK 통합 연동 및 데이터 분석). https://pyromaniac.me/entry/Kibana-%EC%82%AC%EC%9A%A9%EB%B2%95-2-ELK-%ED%86%B5%ED%95%A9-%EC%97%B0%EB%8F%99-%EB%B0%8F-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D.
+
 [3](https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment): [Argo CD 설치 및 설정](https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment)
 
 ## 아르고 시디에서 파드를 늘리는 방법을 알고 싶어
@@ -281,6 +296,7 @@ argocd app sync example-app
 이 과정을 통해 Argo CD가 Git 리포지토리의 변경 사항을 Kubernetes 클러스터에 적용하여 파드 수를 늘리게 됩니다¹(https://velog.io/@squarebird/Argo-CD-%EA%B0%9C%EB%85%90-%EB%B0%8F-%EC%84%A4%EC%B9%98)²(https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment).
 
 ¹(https://velog.io/@squarebird/Argo-CD-%EA%B0%9C%EB%85%90-%EB%B0%8F-%EC%84%A4%EC%B9%98): [Argo CD 개념 및 설치 - 벨로그](https://velog.io/@squarebird/Argo-CD-%EA%B0%9C%EB%85%90-%EB%B0%8F-%EC%84%A4%EC%B9%98)
+
 ²(https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment): [Argo CD 설치 및 설정 - 벨로그](https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment)
 
 원본: Copilot과의 대화, 2025. 2. 24.
@@ -310,7 +326,9 @@ argocd app sync example-app
 4. **로그인 시도**:
    - 사용자 이름을 `admin`으로 설정하고, 복구한 비밀번호를 사용하여 로그인해 보세요
    -
-   - [1](https://www.unixcloudfusion.in/2023/04/solved-argocd-invalid-username-and.html)[2](https://stackoverflow.com/questions/68297354/what-is-the-default-password-of-argocd).
+   - [1](https://www.unixcloudfusion.in/2023/04/solved-argocd-invalid-username-and.html)
+   -
+   - [2](https://stackoverflow.com/questions/68297354/what-is-the-default-password-of-argocd).
 
 ### argocd account update-password FATA[0000] Argo CD server address unspecified
 
@@ -335,5 +353,8 @@ argocd app sync example-app
      ```
 
 [1](https://velog.io/@airoasis/ArgoCD-Kubernetes-Deployment)
+
 [2](https://argo-cd.readthedocs.io/en/stable/operator-manual/server-commands/argocd-server/)
+
 [3](https://argo-cd.readthedocs.io/en/release-3.0/user-guide/environment-variables/).
+
