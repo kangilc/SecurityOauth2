@@ -417,8 +417,27 @@ argocd app sync example-app
 
 [3](https://stackoverflow.com/questions/71164538/argocd-application-resource-stuck-at-deletion).
 
-MetalLB 설치:
+이 오류는 MetalLB 설치 시 필요한 리소스가 누락되었거나 PodSecurityPolicy가 더 이상 지원되지 않는 경우 발생할 수 있습니다. 다음 해결 방법들을 시도해 보세요:
 
-MetalLB를 설치하여 클러스터에 LoadBalancer 기능을 추가할 수 있습니다. MetalLB는 Kubernetes 클러스터에 IP 주소를 할당하는 데 사용됩니다1:
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
+1. **MetalLB 최신 버전 사용**:
+   - MetalLB의 최신 버전을 사용하여 설치합니다. 최신 버전은 PodSecurityPolicy를 사용하지 않습니다:
+     ```bash
+     kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.0/manifests/metallb.yaml
+     ```
 
+2. **Namespace 생성**:
+   - MetalLB를 위한 namespace를 먼저 생성합니다:
+     ```bash
+     kubectl create namespace metallb-system
+     ```
+
+3. **CRD 설치**:
+   - MetalLB 설치 전에 Custom Resource Definitions (CRDs)를 설치합니다:
+     ```bash
+     kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.0/manifests/metallb-crds.yaml
+     ```
+
+4. **PodSecurityPolicy 제거**:
+   - PodSecurityPolicy가 더 이상 사용되지 않으므로, 관련 설정을 제거합니다[1](https://github.com/cert-manager/cert-manager/issues/5971).
+
+이 방법들이 도움이 되기를 바랍니다[2](https://stackoverflow.com/questions/55069793/pod-security-policy-not-working-as-intended)[3](https://stackoverflow.com/questions/53088808/how-to-check-if-pod-security-policy-is-enabled)[1](https://github.com/cert-manager/cert-manager/issues/5971). 문제가 계속 발생하면 추가적인 도움을 드릴 수 있습니다. 어떤 방법을 시도해 보시겠어요?
