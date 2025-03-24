@@ -263,3 +263,106 @@ kubectl get clusterrolebinding metrics-server -o yaml
 [2](https://github.com/kubernetes/kops/issues/14708): How to troubleshoot metrics-server on kubeadm?
 
 [3](https://stackoverflow.com/questions/52893272/kubernetes-metrics-server-unable-to-fully-scrape-metrics): How to diagnose Metrics Server problems
+
+# 알려준 hpa 설정에서는 namespace가 없는데 추가 하고 싶어
+
+HPA 설정에 네임스페이스를 추가하는 방법을 알려드릴게요. 네임스페이스를 지정하면 해당 네임스페이스 내에서 HPA가 적용됩니다.
+
+### HPA 설정에 네임스페이스 추가
+
+1. **네임스페이스 생성**
+   먼저, 네임스페이스를 생성합니다. 예를 들어, `my-namespace`라는 네임스페이스를 생성합니다.
+   ```bash
+   kubectl create namespace my-namespace
+   ```
+
+2. **Deployment 생성**
+   네임스페이스를 지정하여 Deployment를 생성합니다.
+   ```yaml
+   apiVersion: apps/v1
+   kind: Deployment
+   metadata:
+     name: nginx-deployment
+     namespace: my-namespace
+   spec:
+     replicas: 2
+     selector:
+       matchLabels:
+         app: nginx
+     template:
+       metadata:
+         labels:
+           app: nginx
+       spec:
+         containers:
+         - name: nginx
+           image: nginx
+           resources:
+             requests:
+               cpu: "100m"
+               memory: "200Mi"
+             limits:
+               cpu: "500m"
+               memory: "500Mi"
+   ```
+
+3. **HPA 설정**
+   네임스페이스를 지정하여 HPA를 설정합니다.
+   ```yaml
+   apiVersion: autoscaling/v2
+   kind: HorizontalPodAutoscaler
+   metadata:
+     name: nginx-hpa
+     namespace: my-namespace
+   spec:
+     scaleTargetRef:
+       apiVersion: apps/v1
+       kind: Deployment
+       name: nginx-deployment
+     minReplicas: 2
+     maxReplicas: 10
+     metrics:
+     - type: Resource
+       resource:
+         name: cpu
+         target:
+           type: Utilization
+           averageUtilization: 70
+     - type: Resource
+       resource:
+         name: memory
+         target:
+           type: Utilization
+           averageUtilization: 80
+     behavior:
+       scaleUp:
+         stabilizationWindowSeconds: 120
+         policies:
+         - type: Pods
+           value: 1
+           periodSeconds: 120
+         - type: Percent
+           value: 50
+           periodSeconds: 240  # 메모리 사용률 조건의 시간 설정을 4분으로 변경
+       scaleDown:
+         stabilizationWindowSeconds: 300  # 다운스케일 안정화 창을 5분으로 설정
+         policies:
+         - type: Pods
+           value: 1
+           periodSeconds: 300
+   ```
+
+4. **HPA 배포**
+   네임스페이스를 지정하여 HPA 설정 파일을 적용합니다.
+   ```bash
+   kubectl apply -f hpa.yaml -n my-namespace
+   ```
+
+5. **HPA 상태 확인 및 테스트**
+   네임스페이스를 지정하여 HPA가 정상적으로 작동하는지 확인합니다.
+   ```bash
+   kubectl get hpa -n my-namespace
+   kubectl get pods -n my-namespace
+   ```
+
+이렇게 설정하면 지정한 네임스페이스 내에서 HPA가 적용되어 CPU 및 메모리 사용률에 따라 파드 수를 자동으로 조절할 수 있습니다.
