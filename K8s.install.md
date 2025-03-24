@@ -208,6 +208,7 @@ Grafana는 시각화 도구로, 다양한 데이터 소스를 시각화할 수 �
     ```bash
     kubectl run nginx --image=nginx --port=80
     kubectl expose pod nginx --type=NodePort
+    kubectl port-forward svc/nginx 8082:80
     ```
 
 #### Helm Chart
