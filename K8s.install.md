@@ -217,6 +217,51 @@ Grafana는 시각화 도구로, 다양한 데이터 소스를 시각화할 수 �
     helm install my-mysql stable/mysql
     ```
 
+### helm install my-mysql stable/mysql 오류가 발생할 경우
+
+```bash
+helm install my-mysql stable/mysql
+WARNING: This chart is deprecated
+NAME: my-mysql
+LAST DEPLOYED: Mon Mar 24 13:22:33 2025
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+NOTES:
+MySQL can be accessed via port 3306 on the following DNS name from within your cluster:
+my-mysql.default.svc.cluster.local
+```
+
+Helm의 `stable/mysql` 차트가 더 이상 유지 관리되지 않기 때문에 경고 메시지가 표시됩니다[2](https://helm.sh/blog/charts-repo-deprecation/)[1](https://stackoverflow.com/questions/65642967/why-almost-all-helm-packages-are-deprecated). 대신, Bitnami에서 제공하는 MySQL 차트를 사용할 수 있습니다. Bitnami 차트는 지속적으로 업데이트되며, 안정적인 배포를 지원합니다[3](https://github.com/bitnami/charts/blob/main/bitnami/mysql/README.md)[4](https://bitnami.com/stack/mysql/helm).
+
+Bitnami MySQL 차트를 설치하는 방법은 다음과 같습니다:
+
+1. **Bitnami MySQL 차트 설치**:
+   ```bash
+   helm repo add bitnami https://charts.bitnami.com/bitnami
+   helm install my-mysql bitnami/mysql
+   ```
+
+2. **설치 확인**:
+   설치가 완료되면 다음 명령어를 사용하여 상태를 확인할 수 있습니다:
+   ```bash
+   helm status my-mysql
+   ```
+
+3. **접속 정보 확인**:
+   MySQL은 클러스터 내에서 다음 DNS 이름을 통해 포트 3306으로 접근할 수 있습니다:
+   ```
+   my-mysql.default.svc.cluster.local
+   ```
+
+[2](https://helm.sh/blog/charts-repo-deprecation/): [Helm Chart Repository Deprecation Update](https://helm.sh/blog/charts-repo-deprecation/)
+
+[1](https://stackoverflow.com/questions/65642967/why-almost-all-helm-packages-are-deprecated): [Why almost all helm packages are DEPRECATED?](https://stackoverflow.com/questions/65642967/why-almost-all-helm-packages-are-deprecated)
+
+[3](https://github.com/bitnami/charts/blob/main/bitnami/mysql/README.md): [Bitnami package for MySQL](https://github.com/bitnami/charts/blob/main/bitnami/mysql/README.md)
+
+[4](https://bitnami.com/stack/mysql/helm): [Bitnami package for MySQL](https://bitnami.com/stack/mysql/helm)
+
 #### Jenkins
 - **파이프라인 설정**:
     Jenkins 대시보드에서 새로운 파이프라인을 생성하고, 다음과 같은 파이프라인 스크립트를 추가합니다:
