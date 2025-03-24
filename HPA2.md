@@ -13,7 +13,7 @@ kubectl get deployment metrics-server -n kube-system
 ### 2. **네임스페이스 생성**
 HPA와 Deployment를 특정 네임스페이스에 배포합니다.
 ```bash
-kubectl create namespace my-namespace
+kubectl create namespace ns-test
 ```
 
 ### 3. **Deployment 생성**
@@ -23,7 +23,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
-  namespace: my-namespace
+  namespace: ns-test
 spec:
   replicas: 2
   selector:
@@ -53,7 +53,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: nginx-hpa
-  namespace: my-namespace
+  namespace: ns-test
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -95,14 +95,14 @@ spec:
 ### 5. **HPA 배포**
 HPA 설정 파일을 네임스페이스에 적용합니다.
 ```bash
-kubectl apply -f hpa.yaml -n my-namespace
+kubectl apply -f hpa.yaml -n ns-test
 ```
 
 ### 6. **HPA 상태 확인 및 테스트**
 HPA가 정상적으로 작동하는지 확인합니다.
 ```bash
-kubectl get hpa -n my-namespace
-kubectl get pods -n my-namespace
+kubectl get hpa -n ns-test
+kubectl get pods -n ns-test
 ```
 
 ### 7. **Metrics Server 오류 해결**
@@ -177,10 +177,10 @@ Metrics Server가 노드의 인증서를 검증하지 못해 발생하는 `tls: 
 3. **부하 테스트 결과 확인**
    부하 테스트 결과를 확인하여 HPA가 정상적으로 작동하는지 확인합니다. 파드 수가 증가하는지 확인하려면 다음 명령어를 사용합니다.
    ```bash
-   kubectl get hpa -n my-namespace
+   kubectl get hpa -n ns-test
    ```
    ```bash
-   kubectl get pods -n my-namespace
+   kubectl get pods -n ns-test
    ```
 
 ### 예시
