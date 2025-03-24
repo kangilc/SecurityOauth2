@@ -5,6 +5,10 @@ Metrics Server는 HPA가 작동하기 위해 필요한 메트릭 데이터를 �
 ```bash
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 ```
+배포 상태 확인
+```bash
+kubectl get deployment metrics-server -n kube-system
+```
 
 ### 2. **네임스페이스 생성**
 HPA와 Deployment를 특정 네임스페이스에 배포합니다.
