@@ -268,6 +268,29 @@ Bitnami MySQL 차트를 설치하는 방법은 다음과 같습니다:
        ```bash
        /usr/bin/gnome-keyring-daemon --start --components=secrets
        ```
+       ** Message: 14:17:44.174: couldn't access control socket: /run/user/1000/keyring/control: No such file or directory
+       discover_other_daemon: 0
+       ```bash
+       /usr/bin/gnome-keyring-daemon --start --components=secrets
+       ```
+       이 오류는 `gnome-keyring-daemon`이 사용자 세션을 찾을 수 없기 때문에 발생합니다. 이를 해결하기 위해 다음 단계를 따라주세요:
+
+        1. *****사용자 세션 디렉토리 생성*****:
+           ```bash
+           mkdir -p /run/user/$(id -u)/keyring
+           ```
+        
+        2. *****gnome-keyring 데몬 실행*****:
+           ```bash
+           /usr/bin/gnome-keyring-daemon --start --components=secrets
+           ```
+        
+        3. *****환경 변수 설정*****:
+           환경 변수를 설정하여 `gnome-keyring-daemon`이 올바르게 작동하도록 합니다:
+           ```bash
+           export GNOME_KEYRING_CONTROL=/run/user/$(id -u)/keyring
+           export GNOME_KEYRING_PID=$(pgrep gnome-keyring-daemon)
+           ```
     
     3. ****Helm 설치 다시 시도****:
        라이브러리를 설치한 후 Helm 설치를 다시 시도합니다:
