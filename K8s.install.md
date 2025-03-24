@@ -286,6 +286,11 @@ Grafana는 시각화 도구로, 다양한 데이터 소스를 시각화할 수 �
    ```
    여기서 `<NodeIP>`는 클러스터 노드의 IP 주소이고, `<NodePort>`는 위에서 확인한 포트 번호입니다.
 
+    ```bash
+    http://127.0.0.1:46861
+    ❗ Because you are using a Docker driver on linux, the terminal needs to be open to run it.
+    ```
+
 이 오류는 Minikube가 Docker 드라이버를 사용하고 있을 때 발생합니다. 터널을 통해 서비스를 노출하려면 터미널이 열려 있어야 합니다. 다음 단계를 따라 문제를 해결해 보세요:
 
 1. **Minikube 서비스 터널 시작**:
