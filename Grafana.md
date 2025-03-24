@@ -195,3 +195,36 @@ W: http://pkg.jenkins.io/debian-stable/binary/Release.gpg: Key is stored in lega
    ```bash
    sudo apt-get update
    ```
+
+## Grafana를 설치한 후 웹 브라우저에서 확인하는 방법
+
+1. **Grafana 설치**:
+   이미 설치를 완료했다면, Grafana 서버를 시작합니다:
+   ```bash
+   sudo systemctl start grafana-server
+   ```
+
+2. **Grafana 서버 상태 확인**:
+   ```bash
+   sudo systemctl status grafana-server
+   ```
+
+3. **Grafana 서버 자동 시작 설정**:
+   ```bash
+   sudo systemctl enable grafana-server
+   ```
+
+4. **웹 브라우저에서 Grafana 접속**:
+   웹 브라우저를 열고 다음 URL로 접속합니다:
+   ```
+   http://서버IP:3000
+   ```
+   여기서 `서버IP`는 Grafana가 설치된 서버의 IP 주소입니다[1](https://homelessdoor.tistory.com/25).
+
+5. **로그인**:
+   기본 로그인 정보는 다음과 같습니다:
+   - **ID**: `admin`
+   - **PW**: `admin`
+   
+   최초 로그인 후 비밀번호를 변경하는 것이 좋습니다[1](https://homelessdoor.tistory.com/25).
+
