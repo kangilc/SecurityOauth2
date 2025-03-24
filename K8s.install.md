@@ -253,6 +253,8 @@ Bitnami MySQL 차트를 설치하는 방법은 다음과 같습니다:
        Ubuntu를 사용하는 경우:
        ```bash
        sudo apt-get update
+       ```
+       ```bash
        sudo apt-get install gnome-keyring
        ```
     
@@ -272,7 +274,7 @@ Bitnami MySQL 차트를 설치하는 방법은 다음과 같습니다:
        ```bash
        helm install my-mysql bitnami/mysql
        ```
-    [1](https://github.com/Foundry376/Mailspring/issues/681): [GitHub: The name org.freedesktop.secrets was not provided by any .service files](https://github.com/Foundry376/Mailspring/issues/681)
+        [1](https://github.com/Foundry376/Mailspring/issues/681): [GitHub: The name org.freedesktop.secrets was not provided by any .service files](https://github.com/Foundry376/Mailspring/issues/681)
    
 3. **설치 확인**:
    설치가 완료되면 다음 명령어를 사용하여 상태를 확인할 수 있습니다:
