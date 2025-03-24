@@ -147,3 +147,41 @@ Metrics Server가 노드의 인증서를 검증하지 못해 발생하는 `tls: 
    ```
 
 이 단계를 통해 Metrics Server가 정상적으로 작동하도록 설정할 수 있습니다.
+
+## 쿠버네티스 클러스터에서 부하 테스트
+
+쿠버네티스 클러스터에서 부하 테스트를 수행하는 방법을 알려드릴게요. 부하 테스트를 통해 HPA 설정이 제대로 작동하는지 확인할 수 있습니다. 여기서는 Apache HTTP 서버 프로젝트에서 제공하는 `ab`(Apache Benchmark) 도구를 사용하여 부하 테스트를 진행하는 방법을 설명하겠습니다.
+
+### 부하 테스트 단계
+
+1. **Apache Benchmark 설치**
+   먼저, `ab` 도구를 설치합니다. 대부분의 시스템에서는 `apache2-utils` 패키지에 포함되어 있습니다.
+   ```bash
+   sudo apt-get install apache2-utils
+   ```
+
+2. **부하 테스트 명령어**
+   `ab` 명령어를 사용하여 부하 테스트를 수행합니다. 예를 들어, 한 번에 10개의 동시 연결을 사용하여 60초 동안 테스트를 진행합니다.
+   ```bash
+   ab -c 10 -t 60 http://<IP주소:포트번호>/
+   ```
+   여기서:
+   - `-c 10`: 한 번에 10개의 동시 연결을 사용합니다.
+   - `-t 60`: 60초 동안 테스트를 진행합니다.
+   - `http://<IP주소:포트번호>/`: 테스트할 서비스의 URL을 입력합니다.
+
+3. **부하 테스트 결과 확인**
+   부하 테스트 결과를 확인하여 HPA가 정상적으로 작동하는지 확인합니다. 파드 수가 증가하는지 확인하려면 다음 명령어를 사용합니다.
+   ```bash
+   kubectl get hpa -n my-namespace
+   kubectl get pods -n my-namespace
+   ```
+
+### 예시
+```bash
+ab -c 10 -t 60 http://192.168.49.2:80/
+```
+
+[1](https://m.blog.naver.com/ziippy/222089202921): [쿠버네티스 시작하기, Apache HTTP 부하테스트하기](https://imhamburger.tistory.com/95)
+
+[2](https://m.blog.naver.com/mantechbiz/221468682766): [Kubernetes와 JMeter를 사용한 부하테스트](https://m.blog.naver.com/mantechbiz/221468682766)
