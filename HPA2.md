@@ -102,6 +102,8 @@ kubectl apply -f hpa.yaml -n ns-test
 HPA가 정상적으로 작동하는지 확인합니다.
 ```bash
 kubectl get hpa -n ns-test
+```
+```bash
 kubectl get pods -n ns-test
 ```
 
