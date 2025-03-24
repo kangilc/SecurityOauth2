@@ -155,3 +155,43 @@ Prometheus와 Alertmanager를 사용하여 지연 발생 알람을 감지하고,
 원본: Copilot과의 대화, 2025. 2. 20.
 (1) [kubernetes] Prometheus - Alertmanager를 통한 Alert 기능 적용 방법 - 벨로그. https://velog.io/@wanny328/kubernetes-Prometheus-Alertmanager%EB%A5%BC-%ED%86%B5%ED%95%9C-Alert-%EA%B8%B0%EB%8A%A5-%EC%A0%81%EC%9A%A9-%EB%B0%A9%EB%B2%95.
 (2) Kubernetes Pod 정상상태 점검 - Probe 사용 - 벨로그. https://velog.io/@litiblue/Kubernetes-Pod-%EC%A0%95%EC%83%81%EC%83%81%ED%83%9C-%EC%A0%90%EA%B2%80-Probe-%EC%82%AC%EC%9A%A9.
+
+## sudo apt-get update 오류(Error) 발생 시
+```bash
+Reading package lists... Done
+W: https://packages.grafana.com/oss/deb/dists/stable/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+W: http://pkg.jenkins.io/debian-stable/binary/Release.gpg: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+```
+
+이 경고는 `apt-key` 명령어가 더 이상 사용되지 않기 때문에 발생합니다. 대신, 키를 `/etc/apt/trusted.gpg.d` 디렉토리에 저장해야 합니다. 다음 단계를 따라 문제를 해결할 수 있습니다:
+
+1. **키링 디렉토리 생성**:
+   ```bash
+   sudo mkdir -p /etc/apt/keyrings
+   ```
+
+2. **Grafana GPG 키 추가**:
+   ```bash
+   curl -fsSL https://packages.grafana.com/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/grafana.gpg
+   ```
+
+3. **Jenkins GPG 키 추가**:
+   ```bash
+   curl -fsSL https://pkg.jenkins.io/debian/jenkins.io.key | sudo gpg --dearmor -o /etc/apt/keyrings/jenkins.gpg
+   ```
+
+4. **소스 리스트 업데이트**:
+   `/etc/apt/sources.list.d/grafana.list` 파일을 생성하고 다음 내용을 추가합니다:
+   ```bash
+   echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://packages.grafana.com/oss/deb stable main" | sudo tee /etc/apt/sources.list.d/grafana.list
+   ```
+
+   `/etc/apt/sources.list.d/jenkins.list` 파일을 생성하고 다음 내용을 추가합니다:
+   ```bash
+   echo "deb [signed-by=/etc/apt/keyrings/jenkins.gpg] https://pkg.jenkins.io/debian-stable binary/" | sudo tee /etc/apt/sources.list.d/jenkins.list
+   ```
+
+5. **패키지 목록 업데이트**:
+   ```bash
+   sudo apt-get update
+   ```
