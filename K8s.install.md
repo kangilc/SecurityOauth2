@@ -258,3 +258,31 @@ Grafana는 시각화 도구로, 다양한 데이터 소스를 시각화할 수 �
 (3) github.com. https://github.com/liam-isles/ExamJava/tree/79d99b8d0bdf66e05f936e51ccafd75ae6e591b2/installscript2.sh.
 (4) github.com. https://github.com/JaredMcI/RPS/tree/32ce4341d87672db41ad142f8420269b4cd3055a/install-all.sh.
 (5) github.com. https://github.com/kroutley/p4-plugin/tree/7389f2a5596efd87c72c2aa5161904a30c719112/docs%2FWORKFLOW.md.
+
+### `kubectl expose` 명령어를 사용하여 `nginx` 파드를 NodePort 서비스로 노출하는 방법은 다음과 같습니다:
+
+1. **명령어 실행**:
+   ```bash
+   kubectl expose pod nginx --type=NodePort
+   ```
+
+2. **서비스 확인**:
+   명령어 실행 후, 생성된 서비스를 확인합니다:
+   ```bash
+   kubectl get services
+   ```
+
+3. **NodePort 확인**:
+   서비스 목록에서 `nginx` 서비스의 `NodePort`를 확인합니다. 예를 들어, 출력이 다음과 같을 수 있습니다:
+   ```
+   NAME         TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+   nginx        NodePort    10.96.0.1      <none>        80:32000/TCP     1m
+   ```
+
+4. **웹 브라우저에서 접속**:
+   웹 브라우저를 열고 다음 URL로 접속합니다:
+   ```
+   http://<NodeIP>:<NodePort>
+   ```
+   여기서 `<NodeIP>`는 클러스터 노드의 IP 주소이고, `<NodePort>`는 위에서 확인한 포트 번호입니다.
+
