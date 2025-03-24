@@ -174,6 +174,8 @@ Metrics Server가 노드의 인증서를 검증하지 못해 발생하는 `tls: 
    부하 테스트 결과를 확인하여 HPA가 정상적으로 작동하는지 확인합니다. 파드 수가 증가하는지 확인하려면 다음 명령어를 사용합니다.
    ```bash
    kubectl get hpa -n my-namespace
+   ```
+   ```bash
    kubectl get pods -n my-namespace
    ```
 
