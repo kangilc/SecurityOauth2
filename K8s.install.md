@@ -242,43 +242,38 @@ Bitnami MySQL 차트를 설치하는 방법은 다음과 같습니다:
    helm install my-mysql bitnami/mysql
    ```
 
-    ```bash
-    helm install my-mysql bitnami/mysql
-    ```
+    ***bitnami mysql 설치시 오류가 발생하는 경우***
+   
     ```bash
    Error: INSTALLATION FAILED: error getting credentials - err: exit status 1, out: `GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name org.freedesktop.secrets was not provided by any .service files`
     ```
+    이 오류는 `org.freedesktop.secrets` 서비스가 시스템에 설치되지 않았기 때문에 발생합니다. 이를 해결하려면 `gnome-keyring`을 설치해야 합니다. 다음 단계를 따라주세요:
 
-이 오류는 `org.freedesktop.secrets` 서비스가 시스템에 설치되지 않았기 때문에 발생합니다. 이를 해결하려면 `gnome-keyring`을 설치해야 합니다. 다음 단계를 따라주세요:
-
-1. **gnome-keyring 설치**:
-   Ubuntu를 사용하는 경우:
-   ```bash
-   sudo apt-get update
-   sudo apt-get install gnome-keyring
-   ```
-
-   CentOS 또는 RHEL을 사용하는 경우:
-   ```bash
-   sudo yum install gnome-keyring
-   ```
-
-2. **gnome-keyring 데몬 실행**:
-   설치 후, `gnome-keyring` 데몬을 실행합니다:
-   ```bash
-   /usr/bin/gnome-keyring-daemon --start --components=secrets
-   ```
-
-3. **Helm 설치 다시 시도**:
-   라이브러리를 설치한 후 Helm 설치를 다시 시도합니다:
-   ```bash
-   helm install my-mysql bitnami/mysql
-   ```
-
-이 단계를 따르면 `org.freedesktop.secrets` 오류를 해결하고 Helm 설치를 완료할 수 있을 것입니다[1](https://github.com/Foundry376/Mailspring/issues/681). 문제가 계속 발생하면 알려주세요! 😊
-
-[1](https://github.com/Foundry376/Mailspring/issues/681): [GitHub: The name org.freedesktop.secrets was not provided by any .service files](https://github.com/Foundry376/Mailspring/issues/681)
-
+    1. ****gnome-keyring 설치****:
+       Ubuntu를 사용하는 경우:
+       ```bash
+       sudo apt-get update
+       sudo apt-get install gnome-keyring
+       ```
+    
+       CentOS 또는 RHEL을 사용하는 경우:
+       ```bash
+       sudo yum install gnome-keyring
+       ```
+    
+    2. ****gnome-keyring 데몬 실행****:
+       설치 후, `gnome-keyring` 데몬을 실행합니다:
+       ```bash
+       /usr/bin/gnome-keyring-daemon --start --components=secrets
+       ```
+    
+    3. ****Helm 설치 다시 시도****:
+       라이브러리를 설치한 후 Helm 설치를 다시 시도합니다:
+       ```bash
+       helm install my-mysql bitnami/mysql
+       ```
+    [1](https://github.com/Foundry376/Mailspring/issues/681): [GitHub: The name org.freedesktop.secrets was not provided by any .service files](https://github.com/Foundry376/Mailspring/issues/681)
+   
 3. **설치 확인**:
    설치가 완료되면 다음 명령어를 사용하여 상태를 확인할 수 있습니다:
    ```bash
