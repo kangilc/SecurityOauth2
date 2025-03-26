@@ -1,4 +1,4 @@
-AWS EKS 클러스터를 Kubernetes 1.30 버전으로 업그레이드할 때 주의해야 할 사항은 다음과 같습니다:
+## AWS EKS 클러스터를 Kubernetes 1.30 버전으로 업그레이드할 때 주의해야 할 사항은 다음과 같습니다:
 
 1. **사전 준비**:
    - 클러스터의 모든 노드가 컨트롤 플레인과 동일한 버전을 실행 중인지 확인합니다[1](https://docs.aws.amazon.com/ko_kr/eks/latest/userguide/update-cluster.html).
