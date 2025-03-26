@@ -30,6 +30,7 @@ App Manifest는 애플리케이션의 배포 설정을 정의합니다.
    kind: Deployment
    metadata:
      name: my-app
+     namespace: ns-test
    spec:
      replicas: 2
      selector:
