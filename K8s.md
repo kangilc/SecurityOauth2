@@ -38,7 +38,3 @@
 - [쿠버네티스와 컨테이너 오케스트레이션, 그리고 핵심 설계 사상](https://seongjin.me/kubernetes-core-concepts/)[1](https://seongjin.me/kubernetes-core-concepts/)
 - [쿠버네티스 알아보기 1편: 쿠버네티스와 컨테이너, 도커에 대한 기본 개념](https://www.samsungsds.com/kr/insights/220222_kubernetes1.html)[2](https://www.samsungsds.com/kr/insights/220222_kubernetes1.html)
 
-[1](https://seongjin.me/kubernetes-core-concepts/): [쿠버네티스와 컨테이너 오케스트레이션, 그리고 핵심 설계 사상](https://seongjin.me/kubernetes-core-concepts/)
-
-[2](https://www.samsungsds.com/kr/insights/220222_kubernetes1.html): [쿠버네티스 알아보기 1편: 쿠버네티스와 컨테이너, 도커에 대한 기본 개념](https://www.samsungsds.com/kr/insights/220222_kubernetes1.html)
-
