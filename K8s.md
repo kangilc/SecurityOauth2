@@ -38,3 +38,63 @@
 - [쿠버네티스와 컨테이너 오케스트레이션, 그리고 핵심 설계 사상](https://seongjin.me/kubernetes-core-concepts/)[1](https://seongjin.me/kubernetes-core-concepts/)
 - [쿠버네티스 알아보기 1편: 쿠버네티스와 컨테이너, 도커에 대한 기본 개념](https://www.samsungsds.com/kr/insights/220222_kubernetes1.html)[2](https://www.samsungsds.com/kr/insights/220222_kubernetes1.html)
 
+## 쿠버네티스의 클러스터 개념과 구성 컴포넌트
+
+쿠버네티스(Kubernetes) 클러스터는 컨테이너화된 애플리케이션을 실행하고 관리하기 위한 일련의 노드(Node) 머신입니다. 클러스터는 컨트롤 플레인(Control Plane)과 워커 노드(Worker Node)로 구성됩니다[1](https://seongjin.me/kubernetes-cluster-components/)[2](https://www.redhat.com/ko/topics/containers/what-is-a-kubernetes-cluster).
+
+### 클러스터 개념
+
+**쿠버네티스 클러스터**는 물리적 또는 가상 머신의 집합으로, 컨테이너 형태의 애플리케이션을 호스팅합니다. 클러스터는 다음과 같은 주요 구성 요소로 이루어져 있습니다[1](https://seongjin.me/kubernetes-cluster-components/)[2](https://www.redhat.com/ko/topics/containers/what-is-a-kubernetes-cluster):
+
+1. **컨트롤 플레인(Control Plane)**:
+   - 클러스터의 중앙 제어 역할을 수행하며, 클러스터의 상태를 관리하고 조정합니다.
+   - 주요 컴포넌트:
+     - **API 서버(kube-apiserver)**: 클러스터 구성 요소 간의 통신을 관리합니다.
+     - **etcd**: 클러스터 상태 정보를 저장하는 키-값 데이터베이스입니다.
+     - **스케줄러(kube-scheduler)**: 컨테이너를 클러스터 내 최적의 위치에 배치합니다.
+     - **컨트롤러 매니저(kube-controller-manager)**: 클러스터 리소스를 유지 관리하는 프로세스 집합입니다.
+
+2. **워커 노드(Worker Node)**:
+   - 실제 애플리케이션과 워크로드를 실행하는 머신입니다.
+   - 주요 컴포넌트:
+     - **kubelet**: 각 노드에서 컨테이너를 관리하고 모니터링하는 에이전트입니다.
+     - **kube-proxy**: 네트워크 프록시 서비스로, 클러스터 내 통신을 관리합니다.
+     - **컨테이너 런타임 엔진**: 컨테이너를 실행하는 엔진입니다.
+
+### 클러스터 구성 컴포넌트
+
+쿠버네티스 클러스터는 다음과 같은 주요 컴포넌트로 구성됩니다[1](https://seongjin.me/kubernetes-cluster-components/)[2](https://www.redhat.com/ko/topics/containers/what-is-a-kubernetes-cluster):
+
+1. **API 서버(kube-apiserver)**:
+   - 클러스터의 모든 구성 요소가 상호 작용하는 중심 역할을 합니다.
+   - RESTful API를 통해 클러스터의 상태를 조회하고 변경할 수 있습니다.
+
+2. **etcd**:
+   - 클러스터의 상태 정보를 저장하는 분산 키-값 데이터베이스입니다.
+   - 클러스터의 모든 데이터가 저장되며, 높은 가용성과 일관성을 제공합니다.
+
+3. **스케줄러(kube-scheduler)**:
+   - 컨테이너를 클러스터 내 최적의 위치에 배치하는 역할을 합니다.
+   - 리소스 사용률을 최적화하고, 애플리케이션의 성능을 향상시킵니다.
+
+4. **컨트롤러 매니저(kube-controller-manager)**:
+   - 클러스터 리소스를 유지 관리하는 다양한 컨트롤러를 실행합니다.
+   - 노드, 디플로이먼트, 서비스 어카운트 등을 관리합니다.
+
+5. **kubelet**:
+   - 각 노드에서 컨테이너를 관리하고 모니터링하는 에이전트입니다.
+   - 컨테이너가 정상적으로 동작하도록 보장합니다.
+
+6. **kube-proxy**:
+   - 클러스터 내 네트워크 통신을 관리하는 프록시 서비스입니다.
+   - 서비스 디스커버리와 로드 밸런싱을 제공합니다.
+
+### 클러스터 구성도 예시
+!쿠버네티스 클러스터 구성도
+
+쿠버네티스 클러스터는 다양한 환경에서 확장 가능하며, 클라우드와 온프레미스 환경 모두에서 사용할 수 있습니다. 클러스터의 구성 요소들은 서로 협력하여 애플리케이션의 배포, 스케일링, 복구 등을 자동화합니다[1](https://seongjin.me/kubernetes-cluster-components/)[2](https://www.redhat.com/ko/topics/containers/what-is-a-kubernetes-cluster).
+
+[1](https://seongjin.me/kubernetes-cluster-components/): [쿠버네티스 클러스터 개념과 구성 컴포넌트](https://seongjin.me/kubernetes-cluster-components/)
+
+[2](https://www.redhat.com/ko/topics/containers/what-is-a-kubernetes-cluster): [쿠버네티스 클러스터(K8s cluster) 개념, 구성, 관리](https://www.redhat.com/ko/topics/containers/what-is-a-kubernetes-cluster)
+
