@@ -1,4 +1,4 @@
-## nf contrack
+## nf contrack ##
 
 `nf_conntrack`는 Linux 커널에서 네트워크 연결을 추적하는 기능을 제공합니다. 이 기능은 네트워크 연결의 상태를 기록하고 관리하는 데 사용됩니다. 여기에는 다음과 같은 주요 기능이 포함됩니다:
 
@@ -8,5 +8,3 @@
 4. **성능 최적화**: 효율적인 해시 테이블을 사용하여 성능을 최적화합니다[1](https://www.kernel.org/doc/html/latest/networking/nf_conntrack-sysctl.html).
 
 이 기능은 Kubernetes, Docker 네트워크, 방화벽 등 다양한 네트워크 애플리케이션에서 중요한 역할을 합니다[2](https://cloud.tencent.com/developer/article/1761367).
-
-혹시 더 궁금한 점이 있으신가요? 😊
