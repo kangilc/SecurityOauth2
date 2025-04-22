@@ -47,7 +47,7 @@
 - **툴**: **Splunk**
   - **사용법**: Splunk는 보안 이벤트와 로그 데이터를 실시간으로 분석합니다. 데이터를 수집하고, 검색 및 분석 쿼리를 통해 보안 위협을 탐지합니다. 대시보드를 통해 시각화하고, 경고를 설정하여 보안 사고에 대응합니다 [1](https://velog.io/@hackk/IT-%EC%9A%B4%EC%98%81-%EB%A6%AC%EB%88%85%EC%8A%A4%EC%97%90%EC%84%9C-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81-%EB%8F%84%EA%B5%AC-10%EA%B0%80%EC%A7%80-%EB%8B%A4-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0).
 
-이 외에도 다양한 툴들이 있으니, 필요에 따라 적절한 툴을 선택하여 사용하면 됩니다. 추가로 궁금한 점이 있으면 언제든지 물어보세요! 😊
+이 외에도 다양한 툴들이 있으니, 필요에 따라 적절한 툴을 선택하여 사용하면 됩니다.
 
 [1](https://velog.io/@hackk/IT-%EC%9A%B4%EC%98%81-%EB%A6%AC%EB%88%85%EC%8A%A4%EC%97%90%EC%84%9C-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81-%EB%8F%84%EA%B5%AC-10%EA%B0%80%EC%A7%80-%EB%8B%A4-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0): [IT 운영 - 리눅스에서 시스템 모니터링 도구 10가지](https://velog.io/@hackk/IT-%EC%9A%B4%EC%98%81-%EB%A6%AC%EB%88%85%EC%8A%A4%EC%97%90%EC%84%9C-%EC%8B%9C%EC%8A%A4%ED%85%9C-%EB%AA%A8%EB%8B%88%ED%84%B0%EB%A7%81-%EB%8F%84%EA%B5%AC-10%EA%B0%80%EC%A7%80-%EB%8B%A4-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0)
 [2](https://m.blog.naver.com/techtrip/221798053263): [프로메테우스(Prometheus)를 사용한 시스템 모니터링](https://m.blog.naver.com/techtrip/221798053263)
