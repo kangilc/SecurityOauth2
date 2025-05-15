@@ -174,4 +174,188 @@ ingress:
 
 ---
 
-필요하시면 각 단계별로 Terraform, Helm Chart, Argo CD 설정 예제를 더 자세히 드릴 수 있어요. 어떤 부분을 더 깊이 다뤄볼까요?
+좋습니다! 요청하신 **10단계 전환 프로세스**를 기반으로, **AWS Load Balancer Controller 기반의 shared ALB 구조로 전환하는 전체 흐름**을 예제와 함께 **인프라 → 운영 → 개발자 작업** 순으로 상세하게 설명드릴게요.
+
+---
+
+## ✅ 1) AWS LoadBalancer Controller 및 TargetGroupBinding CRD 설치 [인프라]
+
+### 목적:
+Kubernetes 서비스와 AWS ALB Target Group을 연결하기 위한 컨트롤러 및 CRD 설치
+
+### 작업 예시:
+```bash
+# IAM 정책 생성 및 서비스 어카운트 연결
+eksctl create iamserviceaccount \
+  --cluster my-cluster \
+  --namespace kube-system \
+  --name aws-load-balancer-controller \
+  --attach-policy-arn arn:aws:iam::<ACCOUNT_ID>:policy/AWSLoadBalancerControllerIAMPolicy \
+  --approve --region ap-northeast-2
+
+# Helm 설치
+helm repo add eks https://aws.github.io/eks-charts
+helm upgrade -i aws-load-balancer-controller eks/aws-load-balancer-controller \
+  --namespace kube-system \
+  --set clusterName=my-cluster \
+  --set serviceAccount.name=aws-load-balancer-controller \
+  --set region=ap-northeast-2 \
+  --set vpcId=vpc-xxxxxx
+```
+
+---
+
+## ✅ 2) 서비스 타입별 shared ALB 생성 (Ingress 없이, IaC or 콘솔) [인프라]
+
+### 목적:
+서비스 타입별로 ALB를 미리 생성해두고, Kubernetes 외부에서 관리
+
+### 예시 (Terraform):
+```hcl
+resource "aws_lb" "shared_alb" {
+  name               = "shared-alb"
+  internal           = false
+  load_balancer_type = "application"
+  subnets            = var.public_subnets
+  security_groups    = [aws_security_group.alb.id]
+}
+```
+
+---
+
+## ✅ 3) 세부 서비스별 Target Group 생성 및 ALB Listener 연결 (Path Rule 포함) [인프라]
+
+### 예시 (Terraform):
+```hcl
+resource "aws_lb_target_group" "servicewas" {
+  name        = "tg-servicewas"
+  port        = 80
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
+  target_type = "ip"
+}
+
+resource "aws_lb_listener_rule" "was_rule" {
+  listener_arn = aws_lb_listener.http.arn
+  priority     = 10
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.servicewas.arn
+  }
+  condition {
+    path_pattern {
+      values = ["/was/*"]
+    }
+  }
+}
+```
+
+---
+
+## ✅ 4) Helm Chart 수정: Ingress + TargetGroupBinding 병행 지원 [운영-CDS]
+
+### 목적:
+기존 Ingress 방식과 TargetGroupBinding 방식 모두 지원하도록 Helm Chart 템플릿 수정
+
+### 예시 (`templates/targetgroupbinding.yaml`)
+```yaml
+{{- if .Values.targetGroupBinding.enabled }}
+apiVersion: elbv2.k8s.aws/v1beta1
+kind: TargetGroupBinding
+metadata:
+  name: {{ .Values.targetGroupBinding.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  serviceRef:
+    name: {{ .Values.service.name }}
+    port: {{ .Values.service.port }}
+  targetGroupARN: {{ .Values.targetGroupBinding.arn }}
+  targetType: ip
+{{- end }}
+```
+
+---
+
+## ✅ 5) ArgoCD Application에서 Helm Chart 버전 업데이트 [운영-CDS]
+
+### 예시:
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: servicewas
+spec:
+  source:
+    repoURL: https://git.example.com/helm-charts
+    targetRevision: v1.2.0  # ← Helm Chart 버전 업데이트
+    path: charts/servicewas
+```
+
+---
+
+## ✅ 6) 각 서비스 모듈별 `values.yaml` 수정 [운영-모듈별개발담당자]
+
+### 예시:
+```yaml
+targetGroupBinding:
+  enabled: true
+  name: servicewas-tgb
+  arn: arn:aws:elasticloadbalancing:ap-northeast-2:123456789012:targetgroup/tg-servicewas/abc123
+```
+
+---
+
+## ✅ 7) 각 모듈별 파이프라인을 통해 TGB 정상 배포 확인 [운영-개발자, CDS]
+
+### 확인 방법:
+```bash
+kubectl get targetgroupbinding -n servicewas
+kubectl describe targetgroupbinding servicewas-tgb -n servicewas
+```
+
+---
+
+## ✅ 8) 신규 ALB → Pod 간 통신 확인 및 트래픽 100% 전환 [인프라]
+
+### 확인 방법:
+- ALB DNS로 curl 테스트
+- CloudWatch Target Group 상태 확인
+- 기존 Ingress 트래픽 제거
+
+---
+
+## ✅ 9) 기존 Ingress 설정 제거 후 재배포 [운영-모듈별개발담당자]
+
+### `values.yaml` 수정 예시:
+```yaml
+ingress:
+  enabled: false
+```
+
+---
+
+## ✅ 10) 최종 서비스 점검 [운영-모듈별개발담당자]
+
+### 점검 항목:
+- ALB → Target Group → Pod 연결 상태
+- 도메인 정상 응답
+- 로그 및 모니터링 확인 (CloudWatch, Prometheus 등)
+
+---
+
+## 📌 요약 다이어그램
+
+```
+[Client]
+   ↓
+[Route53]
+   ↓
+[Shared ALB (Path Rule)]
+   ├── /was/* → TG: servicewas → Pod
+   ├── /gfts/* → TG: gfts → Pod
+   └── ...
+```
+
+---
+
+필요하시면 이 전체 과정을 **다이어그램**이나 **Terraform + Helm 예제 프로젝트 구조**로도 만들어드릴 수 있어요. 어떤 형식이 가장 도움이 될까요?
