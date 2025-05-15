@@ -358,4 +358,36 @@ ingress:
 
 ---
 
-f
+다음은 **Kubernetes Ingress → AWS Load Balancer Controller 기반 shared ALB 구조로 전환하는 전체 프로세스 흐름도**입니다:
+
+---
+
+### 🧭 전환 순서도 (10단계)
+
+![Kubernetes to ALB Migration Process Flow](blob:https://copilot.cloud.microsoft/c8db5565-a6d8-4007-9585-474435b56c59)
+
+**색상별 역할 구분**:
+- 🔵 **Infra 팀**: ALB, Target Group, Listener 구성 및 통신 확인
+- 🟢 **CDS 팀**: Helm Chart 및 ArgoCD 관리
+- 🔴 **모듈별 개발자**: values.yaml 설정 및 파이프라인 배포
+
+---
+
+### 📌 주요 흐름 요약
+
+1. **Infra**: AWS Load Balancer Controller 및 CRD 설치
+2. **Infra**: 서비스 타입별 shared ALB 생성 (Ingress 없이)
+3. **Infra**: 서비스별 Target Group 및 Path Rule 구성
+4. **CDS**: Helm Chart 수정 (Ingress + TGB 병행 지원)
+5. **CDS**: ArgoCD Application 업데이트
+6. **개발자**: 서비스별 values.yaml 수정
+7. **개발자 + CDS**: 파이프라인으로 TGB 배포 확인
+8. **Infra**: 신규 ALB → Pod 통신 확인 및 트래픽 전환
+9. **개발자**: 기존 Ingress 제거 후 재배포
+10. **개발자**: 최종 서비스 점검
+
+---
+
+이 다이어그램과 함께 앞서 제공한 Helm Chart 및 ArgoCD 템플릿을 활용하면, 전체 전환 작업을 체계적으로 GitOps 기반으로 운영할 수 있습니다.
+
+필요하시면 이 전체 자료를 PDF나 ZIP 파일로 정리해드릴 수도 있어요. 원하시나요?
