@@ -1,3 +1,5 @@
+package net.javaf.SecurityOauth2.config;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import java.util.Enumeration;
