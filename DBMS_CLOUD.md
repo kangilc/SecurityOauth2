@@ -165,5 +165,48 @@ END;
 
 ---
 
-👉 원하면 **전체 프로세스(Oracle → S3 업로드 → Validation) 플로우 다이어그램**을 그려줄까요?  
-아니면 **AWS CLI + PL/SQL 혼합 방식**(멀티파트 업로드 + 체크섬 검증)도 같이 제공할까요?
+# DBMS_CLOUD에서 **AWS S3 인증**을 설정하는 방법 **Credential 객체**를 생성하는 방식이지만, 환경에 따라 추가 옵션이 있습니다:
+
+---
+
+### ✅ **1. 기본 인증 방식**
+- `DBMS_CLOUD.CREATE_CREDENTIAL` 사용:
+  ```sql
+  BEGIN
+    DBMS_CLOUD.CREATE_CREDENTIAL(
+      credential_name => 'AWS_CRED',
+      username        => 'AWS_ACCESS_KEY_ID',
+      password        => 'AWS_SECRET_ACCESS_KEY'
+    );
+  END;
+  /
+  ```
+- 이후 `DBMS_CLOUD.PUT_OBJECT`, `GET_OBJECT`, `COPY_DATA` 등에서 `credential_name`으로 참조[1](https://aws.amazon.com/blogs/database/use-the-dbms_cloud-package-in-amazon-rds-custom-for-oracle-for-direct-amazon-s3-integration/)[2](https://www.pythian.com/blog/technical-track/oracle-dbms_cloud-package-with-aws-s3).
+
+---
+
+### ✅ **2. 추가 인증 옵션**
+- **IAM Role 기반 인증** (Amazon RDS for Oracle):
+  - RDS에서 S3 연동 시 **IAM Role**을 DB 인스턴스에 연결 가능
+  - Oracle DB는 IAM Role을 통해 S3 접근 권한을 위임받음
+  - 이 경우 DBMS_CLOUD에서 별도의 Access Key/Secret Key 없이 IAM Role 인증 사용[3](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/oracle-s3-integration.preparing.html)
+  
+- **SSL Wallet 기반 인증**:
+  - DBMS_CLOUD는 HTTPS 통신을 위해 **SSL Wallet** 설정 필요
+  - Oracle 문서(MOS Note 2748362.1)에 따르면, 인증서 기반 SSL Wallet을 구성하고 DBMS_CLOUD가 이를 참조하도록 설정 가능
+  - 특히 프록시 환경이나 보안 요구사항이 높은 경우 필수[4](https://support.oracle.com/knowledge/Oracle%20Cloud/2748362_1.html)
+
+---
+
+### ✅ **3. 보안 모델**
+- DBMS_CLOUD는 **Credential 객체**를 데이터베이스 내부에 저장
+- 권한 제어:
+  - `GRANT EXECUTE ON DBMS_CLOUD TO <user>`
+  - `GRANT CREATE CREDENTIAL TO <user>`
+- 필요 시 **Access Control Entries (ACE)** 설정으로 네트워크 접근 제어 가능[5](https://docs.oracle.com/en/database/oracle/oracle-database/19/arpls/DBMS_CLOUD.html)
+
+---
+
+👉 원하면 **IAM Role 기반 인증을 사용하는 RDS 예제**와  
+**SSL Wallet 설정 절차**를 정리해줄까요?  
+아니면 **DBMS_CLOUD 인증 방식별 비교표**를 만들어줄까요?
