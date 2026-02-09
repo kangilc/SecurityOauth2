@@ -593,3 +593,5 @@ ArgoCD를 삭제하려면 다음 단계를 따라주세요:
 
 [1](https://stackoverflow.com/questions/55462654/access-minikube-loadbalancer-service-from-host-machine): [Minikube LoadBalancer 서비스 접근 방법 - Stack Overflow](https://stackoverflow.com/questions/55462654/access-minikube-loadbalancer-service-from-host-machine)
 [2](https://stackoverflow.com/questions/67262769/access-argocd-server): [Argo CD 설치 및 설정 - Argo CD 공식 문서](https://argo-cd.readthedocs.io/en/release-3.0/getting_started/)
+
+7YVBX7XVS6SYN75KX2U3FRTPA5TXOTUPPI4QLOA5QVNFJYC72ZOAQUQNNEU2BRSY
