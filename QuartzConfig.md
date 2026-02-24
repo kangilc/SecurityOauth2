@@ -114,13 +114,13 @@ sequenceDiagram
 
     QuartzConfig->>SchedulerFactoryBean: schedulerFactoryBean.setApplicationContext(applicationContext)
 
-    QuartzConfig->>Properties: new Properties()
-    Properties-->>QuartzConfig: properties
+    QuartzConfig->>QuartzProperties: new QuartzProperties()
+    QuartzProperties-->>QuartzConfig: properties
 
     QuartzConfig->>QuartzProperties: quartzProperties.getProperties()
     QuartzProperties-->>QuartzConfig: propertiesMap
 
-    QuartzConfig->>Properties: properties.putAll(propertiesMap)
+    QuartzConfig->>QuartzProperties: properties.putAll(propertiesMap)
     QuartzConfig->>SchedulerFactoryBean: schedulerFactoryBean.setQuartzProperties(properties)
 
     QuartzConfig->>SchedulerFactoryBean: schedulerFactoryBean.setGlobalTriggerListeners(triggersListener)
