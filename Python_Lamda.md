@@ -825,3 +825,249 @@ flowchart LR
 원하시는 **브랜치-환경 매핑**(예: `feature/*` → ephemeral 환경), VPC 연결, Private API, WAF, R53 커스텀 도메인, ALB 통합 등도 바로 확장해드릴 수 있어.\
 어떤 변형이 필요해? (ex. VPC 연결, DB 접근, 다중 스테이지, 별도 승인 단계 등)
 
+짧게 답하면: **여전히 많이 씁니다.**\
+다만 “신규 녹색필드”나 “퍼블릭 리포 중심(예: GitHub/GitLab)” 팀은 **GitHub Actions/GitLab CI로 이동**하는 흐름이 확실하고, **사내망/보안·규제/온프레미스** 중심 팀은 **Jenkins를 계속 주력**으로 씁니다. 즉 **환경과 요구사항**에 따라 최적 선택이 갈립니다.
+
+아래에 **언제 Jenkins가 유리한지**, **언제 Actions/SAM이 유리한지**, 그리고 **Lambda(SAM) 기준 Jenkins 템플릿**까지 실전형으로 정리했어요.
+
+***
+
+## ✅ Jenkins가 “더” 적합한 경우
+
+*   **사내망/폐쇄망/규제 환경**: 인터넷 차단, SaaS 금지, 아티팩트 프록시만 허용되는 환경
+*   **온프레미스/하이브리드**: 사내 Git/SVN, Nexus/Artifactory, 사내 쿠버네티스/VM 배포 중심
+*   **복잡한 멀티리포/모놀리포**: 팬아웃/팬인, 의존성 그래프에 따른 동적 파이프라인
+*   **플러그인/에이전트 커스터마이징**: 특수 빌드 도구, 자체 보안 스캐너, 사내용 툴 통합
+*   **긴 배치/병렬 대량 작업**: 대규모 에이전트 풀, 커스텀 autoscaling
+
+> 반대로 \*\*Jenkins 운영 부담(업그레이드/플러그인 호환/보안패치/백업/스케일링)\*\*은 계속 존재합니다. 전담 운영 없이 쓰기엔 장기적으로 비용이 커질 수 있어요.
+
+***
+
+## ✅ GitHub Actions(또는 GitLab CI)가 유리한 경우
+
+*   **SaaS 허용 / 퍼블릭 Git 활용**: 러닝커브 낮고 관리부담 적음
+*   **IaC 및 클라우드 네이티브**: OIDC 기반 권한 위임, 캐시/매트릭스/환경 보호규칙 등 기본 제공
+*   **개발자 경험(DX)**: Marketplace 액션, 손쉬운 시크릿/환경 관리, 빠른 세팅
+*   **Lambda/SAM/Serverless**: 샘플과 베스트 프랙티스가 풍부, 배포 속도 빠름
+
+***
+
+## 🔁 “공존” 패턴 (Jenkins + Actions/SAM 같이 쓰기)
+
+*   **소스=GitHub, 빌드/배포=Jenkins**: GitHub webhook → Jenkins Multibranch Pipeline → 빌드/배포
+*   **CI=GitHub Actions, CD=Jenkins**: Actions이 아티팩트 업로드 후 Jenkins에 **POST 트리거**(예: 특정 환경 배포는 Jenkins가 담당)
+*   **단계별 분담**: 보안 스캔/패키징은 Jenkins, 최종 **SAM deploy는 Actions**(OIDC) 등
+
+> 기존 Jenkins 자산이 크면 **점진적 분리**가 현실적입니다. 신규 서비스는 Actions, 레거시는 Jenkins 유지 → 점차 전환.
+
+***
+
+## 🧱 Jenkins에서 AWS Lambda(SAM) 배포 – 실전 템플릿
+
+### 1) 권장 플러그인
+
+*   **Pipeline (Declarative/Multibranch)**, **Git**, **Credentials Binding**, **Git Parameter**
+*   **JUnit**, **Warnings Next Generation**, **AnsiColor**, **Timestamper**
+*   (옵션) **Configuration as Code(JCasC)**, **Job DSL**, **Matrix**, **SSH Agent**
+*   (AWS) **AWS Credentials** 또는 CLI 사전설치/AssumeRole 전략
+
+> GitHub 연동이면 **GitHub Branch Source**, GitLab이면 **GitLab Plugin**도 추가.
+
+***
+
+### 2) Jenkins 에이전트 전략
+
+*   **Docker 에이전트** 권장: `awscli`, `aws-sam-cli`, `python3.11`, `pip`, `zip`, `jq` 포함된 사내용 베이스 이미지
+*   또는 **EC2/VM 에이전트**에 사전 설치 + 캐시 디렉터리 마운트
+
+***
+
+### 3) 크리덴셜/권한 설계
+
+*   **가장 안전**: Jenkins 에이전트가 **EC2 IAM Role**(Instance Profile)로 실행 → `aws sts assume-role`로 **배포용 Role** 전환
+*   폐쇄망이면 **Access Key/Secret**을 Jenkins Credentials에 등록(보안·순환 정책 필수)
+*   OIDC는 Jenkins도 가능하지만 운영 복잡도가 높아 실무에선 **EC2 Role + AssumeRole**이 깔끔합니다.
+
+***
+
+### 4) 브랜치 → 환경 매핑 예시
+
+*   `develop` → `dev`
+*   `release/*` → `stg`
+*   `main`/태그 → `prod`
+
+분기 로직은 Jenkinsfile에서 `BRANCH_NAME` 기준으로 처리.
+
+***
+
+### 5) **Jenkinsfile (Declarative) – SAM 배포 파이프라인 예시**
+
+```groovy
+pipeline {
+  agent {
+    // 사내용 베이스 이미지: awscli, sam-cli, python3.11, zip, jq 포함
+    docker { image 'registry.local/ci/python-aws-sam:3.11' args '-u root:root' }
+  }
+  options {
+    ansiColor('xterm')
+    timestamps()
+    buildDiscarder(logRotator(numToKeepStr: '50'))
+    disableConcurrentBuilds()
+    timeout(time: 30, unit: 'MINUTES')
+  }
+  environment {
+    AWS_REGION = 'ap-northeast-2'
+    APP_NAME   = 'my-lambda-api'
+    ARTIFACT_BUCKET = 'my-sam-artifacts-apne2'
+    // Jenkins Credentials ID (Access Key/Secret) 사용하는 경우:
+    // AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
+    // AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
+  }
+  stages {
+
+    stage('Checkout') {
+      steps {
+        checkout scm
+        sh 'git --version'
+      }
+    }
+
+    stage('Setup Python & Deps') {
+      steps {
+        sh '''
+          python3 --version
+          pip3 install --upgrade pip
+          pip3 install -r requirements.txt
+          pip3 install pytest black flake8 aws-sam-cli
+        '''
+      }
+    }
+
+    stage('Lint') {
+      steps { sh 'black --check . && flake8 .' }
+    }
+
+    stage('Test') {
+      steps {
+        sh 'pytest -q --disable-warnings --junitxml=reports/junit.xml'
+      }
+      post {
+        always {
+          junit 'reports/junit.xml'
+        }
+      }
+    }
+
+    stage('Resolve Env') {
+      steps {
+        script {
+          // 브랜치 기준 환경 매핑
+          def envName = 'dev'
+          if (env.BRANCH_NAME == 'main' || env.BRANCH_NAME.startsWith('tags/')) envName = 'prod'
+          else if (env.BRANCH_NAME.startsWith('release/')) envName = 'stg'
+          env.DEPLOY_ENV = envName
+          echo "Deploy Environment = ${env.DEPLOY_ENV}"
+        }
+      }
+    }
+
+    stage('AssumeRole (Optional)') {
+      when { expression { return env.DEPLOY_ENV in ['stg','prod'] } }
+      steps {
+        // EC2 Instance Profile이 붙은 에이전트에서 배포용 Role을 전환하는 패턴
+        sh '''
+          ROLE_ARN="arn:aws:iam::<ACCOUNT_ID>:role/MyCICDRole-${DEPLOY_ENV^}" # Dev/Prod 등 케이스
+          CREDS=$(aws sts assume-role --role-arn "$ROLE_ARN" --role-session-name jenkins-sam --duration-seconds 3600)
+          export AWS_ACCESS_KEY_ID=$(echo $CREDS | jq -r .Credentials.AccessKeyId)
+          export AWS_SECRET_ACCESS_KEY=$(echo $CREDS | jq -r .Credentials.SecretAccessKey)
+          export AWS_SESSION_TOKEN=$(echo $CREDS | jq -r .Credentials.SessionToken)
+          aws sts get-caller-identity
+        '''
+      }
+    }
+
+    stage('SAM Build') {
+      steps {
+        sh 'sam build --use-container'
+      }
+    }
+
+    stage('SAM Deploy') {
+      steps {
+        sh '''
+          sam deploy \
+            --stack-name ${APP_NAME}-${DEPLOY_ENV} \
+            --s3-bucket ${ARTIFACT_BUCKET} \
+            --parameter-overrides Stage=${DEPLOY_ENV} AppName=${APP_NAME} ArtifactBucketName=${ARTIFACT_BUCKET} EnableCanary=true \
+            --capabilities CAPABILITY_IAM \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset \
+            --region ${AWS_REGION}
+        '''
+      }
+    }
+
+    stage('Outputs') {
+      steps {
+        sh '''
+          aws cloudformation describe-stacks --stack-name ${APP_NAME}-${DEPLOY_ENV} \
+            --query "Stacks[0].Outputs[?OutputKey=='ApiUrl'].OutputValue" --output text --region ${AWS_REGION} || true
+        '''
+      }
+    }
+  }
+
+  post {
+    always {
+      archiveArtifacts artifacts: 'reports/**/*.xml', allowEmptyArchive: true
+    }
+    failure {
+      echo 'Build/Deploy failed. Please check logs and alarms.'
+    }
+  }
+}
+```
+
+> 위 Jenkinsfile은 **SAM 기반 배포**를 Jenkins에서 안정적으로 수행하는 표준 패턴입니다.\
+> (EC2 Role + AssumeRole / AccessKey 방식 둘 다 대응)
+
+***
+
+## 📊 간단 흐름(사용자 선호 Mermaid)
+
+```mermaid
+flowchart LR
+  Dev[Developer] -->|push| SCM[Git Server]
+  SCM --> MB[Multibranch Pipeline]
+  MB --> CI[Lint/Test]
+  CI --> Build[SAM Build]
+  Build -->|AssumeRole| Deploy[SAM Deploy]
+  Deploy --> CFN[CloudFormation]
+  CFN --> Lambda["Lambda (Alias: live)"]
+  Lambda --> APIGW[API Gateway]
+  Lambda --> CWL[CloudWatch Logs]
+```
+
+***
+
+## 🧩 운영 팁
+
+*   **Job as Code**: Jenkins Configuration as Code(JCasC)로 파이프라인/플러그인/크리덴셜 선언형 관리
+*   **공유 라이브러리**: `vars/`로 사내 표준 Stage(예: `runSamDeploy(env)`) 만들어 재사용
+*   **에이전트 자동 확장**: Kubernetes Plugin으로 빌드 팟 on-demand 생성
+*   **보안**: 플러그인 업데이트/백업 자동화, 최소 권한 Role, 크리덴셜 회전 주기
+*   **피쳐 환경**: PR/feature 브랜치에 **ephemeral 스택** 생성 후 머지 시 `sam delete`로 정리(비용 주의)
+
+***
+
+## 결론
+
+*   **Jenkins는 지금도 “많이” 쓰입니다.** 특히 **사내망/규제/온프레미스** 중심에선 메인입니다.
+*   **Lambda + SAM** 업무가 많고, **SaaS 허용/클라우드 네이티브**라면 **GitHub Actions**가 운영 편의성·보안(OIDC)·DX 면에서 더 좋습니다.
+*   레거시 자산이 크면 **Jenkins와 공존** → **점진 전환**이 현실적인 전략입니다.
+
+필요하시면 위 Jenkinsfile을 **귀사 표준 플러그인/에이전트/권한 모델**에 맞춰 커스터마이징해서 드릴게요.
+
+*   (예) Nexus 연동, 내부 PyPI 프록시, WAF/R53/Private API, VPC Subnet/SG, CodeDeploy 알람 연동 등.\
+    어떤 제약(망, 계정 구조, 보안정책)이 있는지 알려주시면 바로 맞춰 드리겠습니다.
